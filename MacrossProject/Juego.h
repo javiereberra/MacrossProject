@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include "Jugador.h"
+
 
 using namespace std;
 using namespace sf;
@@ -20,6 +22,8 @@ private:
 	Sprite* fondoMenu;
 	Font* fuente;
 	Text* menu;
+
+	Jugador* jugador;
 
 
 	bool start;

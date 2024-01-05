@@ -31,6 +31,8 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	menu->setCharacterSize(15);
 	menu->setPosition(290, 450);
 
+	jugador = new Jugador();
+
 
 	fondoSpeed = 0.02f;
 
@@ -109,6 +111,9 @@ void Juego::actualizar() {
 	if (fondo->getPosition().x <= (-665.0f)) {
 	fondo->setPosition(0, 0); // Reinicia la posición del fondo
 	}
+
+	Vector2i mousePos = Mouse::getPosition(*ventana1);
+	jugador->Movimiento(mousePos.x, mousePos.y);
 }
 
 void Juego::dibujar() {
@@ -117,6 +122,8 @@ void Juego::dibujar() {
 
 	ventana1->draw(*fondo);
 	
+	jugador->Dibujar(ventana1);
+
 	ventana1->display();
 
 
