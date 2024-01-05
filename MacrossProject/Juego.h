@@ -16,6 +16,12 @@ private:
 	//variables para el fondo
 	Texture* textura1;
 	Sprite* fondo;
+	Texture* textura2;
+	Sprite* fondoMenu;
+	Font* fuente;
+	Text* menu;
+
+
 	bool start;
 	float fondoSpeed;
 

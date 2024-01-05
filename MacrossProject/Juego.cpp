@@ -18,6 +18,20 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	fondo->setTexture(*textura1);
 	fondo->setScale(2.0f,2.0f);
 	
+	textura2 = new Texture;
+	fondoMenu = new Sprite;
+	textura2->loadFromFile("assets/menu.jpg");
+	fondoMenu->setTexture(*textura2);
+
+	fuente = new Font;
+	menu = new Text;
+	fuente->loadFromFile("assets/arial.ttf");
+	menu->setFont(*fuente);
+	menu->setString("PRESIONA 'S' PARA COMENZAR");
+	menu->setCharacterSize(15);
+	menu->setPosition(290, 450);
+
+
 	fondoSpeed = 0.02f;
 
 	//para que siempre inicie el menú
@@ -53,7 +67,8 @@ void Juego::ejecutar() {
 		}
 		else {
 			//Menu de fondo si start es false
-			ventana1->draw(*fondo);
+			ventana1->draw(*fondoMenu);
+			ventana1->draw(*menu);
 			
 			
 		}
