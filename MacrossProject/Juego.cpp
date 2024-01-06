@@ -34,10 +34,12 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	jugador = new Jugador();
 
 
-	fondoSpeed = 0.02f;
+	fondoSpeed = 2.0f;
 
 	//para que siempre inicie el menú
 	start = false;
+
+	deltaTime = 1.0f / 60.0f;
 
 }
 
@@ -81,6 +83,7 @@ void Juego::ejecutar() {
 
 void Juego::gameLoop() {
 
+	
 
 	while (ventana1->isOpen() && start) {
 
@@ -99,21 +102,21 @@ void Juego::procesar_eventos() {
 		case Event::Closed:
 			ventana1->close();
 			break;
-		
-
 		}
 	}
+
+	jugador->Movimiento(deltaTime);
+
 }
 
 void Juego::actualizar() {
-	fondo->move(-fondoSpeed, 0);
+	fondo->move(-fondoSpeed * deltaTime, 0);
 
 	if (fondo->getPosition().x <= (-665.0f)) {
 	fondo->setPosition(0, 0); // Reinicia la posición del fondo
 	}
 
-	Vector2i mousePos = Mouse::getPosition(*ventana1);
-	jugador->Movimiento(mousePos.x, mousePos.y);
+	jugador->Actualizar(deltaTime);
 }
 
 void Juego::dibujar() {

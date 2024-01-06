@@ -25,6 +25,7 @@ private:
 
 	Jugador* jugador;
 
+	float deltaTime;
 
 	bool start;
 	float fondoSpeed;

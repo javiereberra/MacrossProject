@@ -16,6 +16,11 @@ Jugador::Jugador()
 	nave->setPosition(400, 300);
 	nave->setScale(1.5f, 1.5f);
 
+	
+	velocidadX = 3.0f;
+	velocidadY = 3.0f;
+
+	position = Vector2f(300.0f, 400.0f);
 }
 
 void Jugador::Dibujar(RenderWindow* ventana1) {
@@ -24,15 +29,32 @@ void Jugador::Dibujar(RenderWindow* ventana1) {
 
 }
 //métodos para el movimiento y obtener la posición de la mira
-void Jugador::Movimiento(float x, float y) {
+void Jugador::Movimiento(float deltaTime) {
 
-	nave->setPosition(x, y);
+	if (Keyboard::isKeyPressed(Keyboard::Key::Up)) {
+		position.y -= velocidadY * deltaTime;
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::Down)) {
+		position.y += velocidadY * deltaTime;
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::Left)) {
+		position.x -= velocidadX * deltaTime;
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::Right)) {
+		position.x += velocidadX * deltaTime;
+	}
+
+	
+
 
 
 }
 
-Vector2f Jugador::ObtenerPosicion() {
+void Jugador::Actualizar(float deltaTime) {
 
-	return nave->getPosition();
+	
+
+	nave->setPosition(position);
 
 }
+
