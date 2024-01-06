@@ -9,7 +9,7 @@ Jugador::Jugador()
 {
 	//para definir la textura y sprite de la mira con su posición, origen y tamaño.
 	jugadorTx = new Texture;
-	jugadorTx->loadFromFile("assets/macross1.png");
+	jugadorTx->loadFromFile("assets/enemigo1.png");
 	nave = new Sprite;
 	nave->setTexture(*jugadorTx);
 	nave->setOrigin(jugadorTx->getSize().x / 2.0f, jugadorTx->getSize().y / 2.0f);
