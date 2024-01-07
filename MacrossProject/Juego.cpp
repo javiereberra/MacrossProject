@@ -32,6 +32,8 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	menu->setPosition(290, 450);
 
 	jugador = new Jugador();
+	
+	enemigos = new Enemigos();
 
 
 	fondoSpeed = 2.0f;
@@ -106,6 +108,7 @@ void Juego::procesar_eventos() {
 	}
 
 	jugador->Movimiento(deltaTime);
+	enemigos->Movimiento(deltaTime);
 
 }
 
@@ -117,6 +120,7 @@ void Juego::actualizar() {
 	}
 
 	jugador->Actualizar(deltaTime);
+	enemigos->Actualizar(deltaTime);
 }
 
 void Juego::dibujar() {
@@ -126,6 +130,8 @@ void Juego::dibujar() {
 	ventana1->draw(*fondo);
 	
 	jugador->Dibujar(ventana1);
+
+	enemigos->Dibujar(ventana1);
 
 	ventana1->display();
 

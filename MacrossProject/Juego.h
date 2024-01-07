@@ -3,6 +3,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include "Jugador.h"
+#include "Enemigos.h"
 
 
 using namespace std;
@@ -24,6 +25,8 @@ private:
 	Text* menu;
 
 	Jugador* jugador;
+	
+	Enemigos* enemigos;
 
 	float deltaTime;
 
