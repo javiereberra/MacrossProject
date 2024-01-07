@@ -26,7 +26,7 @@ private:
 
 	Jugador* jugador;
 	
-	Enemigos* enemigos;
+	Enemigos* enemigos[5];
 
 	float deltaTime;
 

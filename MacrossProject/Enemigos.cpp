@@ -17,9 +17,9 @@ Enemigos::Enemigos()
 
 
 	velocidadX = 3.0f;
-	velocidadY = 3.0f;
+	velocidadY = 2.5f;
 
-	position = Vector2f(700.0f, 300.0f);
+	//position = Vector2f(700.0f, 300.0f);
 }
 
 void Enemigos::Dibujar(RenderWindow* ventana1) {
@@ -27,31 +27,11 @@ void Enemigos::Dibujar(RenderWindow* ventana1) {
 	ventana1->draw(*naveEnemiga);
 
 }
-//métodos para el movimiento y obtener la posición de la mira
-void Enemigos::Movimiento(float deltaTime) {
 
-	if (Keyboard::isKeyPressed(Keyboard::Key::Up)) {
-		position.y -= velocidadY * deltaTime;
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::Down)) {
-		position.y += velocidadY * deltaTime;
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::Left)) {
-		position.x -= velocidadX * deltaTime;
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::Right)) {
-		position.x += velocidadX * deltaTime;
-	}
-
-
-
-
-
-}
 
 void Enemigos::Actualizar(float deltaTime) {
 
-
+	position.x -= velocidadX * deltaTime;
 
 	naveEnemiga->setPosition(position);
 

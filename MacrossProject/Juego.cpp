@@ -33,8 +33,16 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 
 	jugador = new Jugador();
 	
-	enemigos = new Enemigos();
-
+	enemigos[0] = new Enemigos();
+	enemigos[0]->position = Vector2f(690.0f, 300.0f);
+	enemigos[1] = new Enemigos();
+	enemigos[1]->position = Vector2f(700.0f, 500.0f);
+	enemigos[2] = new Enemigos();
+	enemigos[2]->position = Vector2f(710.0f, 100.0f);
+	enemigos[3] = new Enemigos();
+	enemigos[3]->position = Vector2f(680.0f, 400.0f);
+	enemigos[4] = new Enemigos();
+	enemigos[4]->position = Vector2f(730.0f, 200.0f);
 
 	fondoSpeed = 2.0f;
 
@@ -108,7 +116,7 @@ void Juego::procesar_eventos() {
 	}
 
 	jugador->Movimiento(deltaTime);
-	enemigos->Movimiento(deltaTime);
+	
 
 }
 
@@ -120,7 +128,12 @@ void Juego::actualizar() {
 	}
 
 	jugador->Actualizar(deltaTime);
-	enemigos->Actualizar(deltaTime);
+
+	
+	for (int i = 0; i < 5; ++i) {  
+		enemigos[i]->Actualizar(deltaTime); 
+	}
+	
 }
 
 void Juego::dibujar() {
@@ -131,7 +144,10 @@ void Juego::dibujar() {
 	
 	jugador->Dibujar(ventana1);
 
-	enemigos->Dibujar(ventana1);
+	// para los 5 va un for
+	for (int i = 0; i < 5; ++i) {  
+		enemigos[i]->Dibujar(ventana1);  
+	}
 
 	ventana1->display();
 

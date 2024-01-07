@@ -16,16 +16,18 @@ private:
 	float velocidadY;
 
 
-	Vector2f position;
+	
 
 public:
 	//constructor
 	Enemigos();
 
+	Vector2f position;
+
 	void Dibujar(RenderWindow* ventana1);
 
 	//gestionar el movimiento del cursor
-	void Movimiento(float deltaTime);
+	
 	void Actualizar(float deltaTime);
 
 
