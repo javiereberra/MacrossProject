@@ -33,6 +33,10 @@ void Enemigos::Actualizar(float deltaTime) {
 
 	position.x -= velocidadX * deltaTime;
 
+	if (position.x <= -5.0f) {
+		position.x = 810;
+	}
+
 	naveEnemiga->setPosition(position);
 
 }
