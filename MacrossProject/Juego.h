@@ -21,6 +21,9 @@ private:
 	Sprite* fondo;
 	Texture* textura2;
 	Sprite* fondoMenu;
+	Texture* textura3;
+	Sprite* vidasSprite;
+
 	Font* fuente;
 	Text* menu;
 
@@ -29,6 +32,12 @@ private:
 	Enemigos* enemigos[5];
 
 	float deltaTime;
+
+	int vidas;
+	int ptos;
+
+	Text* vidasText;
+	Text* puntajeText;
 
 	bool start;
 	float fondoSpeed;

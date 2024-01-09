@@ -23,6 +23,13 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	textura2->loadFromFile("assets/menu.jpg");
 	fondoMenu->setTexture(*textura2);
 
+	textura3 = new Texture;
+	vidasSprite = new Sprite;
+	textura3->loadFromFile("assets/macross1.png");
+	vidasSprite->setTexture(*textura3);
+	vidasSprite->setScale(1.0f, 1.0f);
+	vidasSprite->setPosition(10, 10);
+
 	fuente = new Font;
 	menu = new Text;
 	fuente->loadFromFile("assets/arial.ttf");
@@ -50,6 +57,21 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	start = false;
 
 	deltaTime = 1.0f / 60.0f;
+
+	vidas = 3;
+	ptos = 0;
+
+	puntajeText = new Text;
+	puntajeText->setFont(*fuente);
+	puntajeText->setCharacterSize(20);
+	puntajeText->setString("SCORE: " + to_string(ptos));
+	puntajeText->setPosition(650, 10);
+
+	vidasText = new Text;
+	vidasText->setFont(*fuente);
+	vidasText->setCharacterSize(20);
+	vidasText->setString(to_string(vidas));
+	vidasText->setPosition(50, 10);
 
 }
 
@@ -148,6 +170,10 @@ void Juego::dibujar() {
 	for (int i = 0; i < 5; ++i) {  
 		enemigos[i]->Dibujar(ventana1);  
 	}
+
+	ventana1->draw(*puntajeText);
+	ventana1->draw(*vidasText);
+	ventana1->draw(*vidasSprite);
 
 	ventana1->display();
 

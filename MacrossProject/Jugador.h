@@ -15,6 +15,7 @@ private:
 	float velocidadX;
 	float velocidadY;
 	
+	
 
 	Vector2f position;
 

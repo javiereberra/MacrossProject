@@ -16,6 +16,7 @@ Jugador::Jugador()
 	nave->setScale(1.5f, 1.5f);
 
 	
+	
 	velocidadX = 3.0f;
 	velocidadY = 3.0f;
 
