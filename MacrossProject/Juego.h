@@ -23,6 +23,9 @@ private:
 	Sprite* fondoMenu;
 	Texture* textura3;
 	Sprite* vidasSprite;
+	Texture* explText;
+	Sprite* explSprite;
+
 
 	Font* fuente;
 	Text* menu;
@@ -41,6 +44,9 @@ private:
 
 	bool start;
 	float fondoSpeed;
+	bool explosionActiva;
+
+	Vector2f posicionExplosion;
 
 public:
 	//constructor de juego

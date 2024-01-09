@@ -30,6 +30,16 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	vidasSprite->setScale(1.0f, 1.0f);
 	vidasSprite->setPosition(10, 10);
 
+	explText = new Texture;
+	explSprite = new Sprite;
+	explText->loadFromFile("assets/exp2tr.png");
+	explSprite->setTexture(*explText);
+	
+
+
+
+
+
 	fuente = new Font;
 	menu = new Text;
 	fuente->loadFromFile("assets/arial.ttf");
@@ -74,7 +84,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	vidasText->setPosition(50, 10);
 
 
-
+	explosionActiva = false;
 	
 
 }
@@ -192,6 +202,10 @@ void Juego::dibujar() {
 	ventana1->draw(*vidasText);
 	ventana1->draw(*vidasSprite);
 
+	if (explosionActiva) {
+		ventana1->draw(*explSprite);
+	}
+
 	ventana1->display();
 
 
@@ -216,6 +230,12 @@ void Juego::detectar_colisiones() {
 				if (jugadorRect.intersects(enemigoRect)) {
 					ptos++;
 					puntajeText->setString("SCORE: " + to_string(ptos));
+
+					//posicionExplosion = spriteEnemigo->getPosition();
+					posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
+					explSprite->setPosition(posicionExplosion);
+
+					explosionActiva = true;
 
 					enemigos[i]->desactivar();
 				
