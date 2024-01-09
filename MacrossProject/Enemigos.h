@@ -30,5 +30,7 @@ public:
 	
 	void Actualizar(float deltaTime);
 
+	bool Colision(float x, float y);
+
 
 };

@@ -58,3 +58,13 @@ void Jugador::Actualizar(float deltaTime) {
 
 }
 
+bool Jugador::Colision(float x, float y) {
+
+	FloatRect bounds = nave->getGlobalBounds();
+
+	if (bounds.contains(x, y)) {
+		return true;
+	}
+
+
+}

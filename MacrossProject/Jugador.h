@@ -28,6 +28,7 @@ public:
 	//gestionar el movimiento del cursor
 	void Movimiento(float deltaTime);
 	void Actualizar(float deltaTime);
+	bool Colision(float x, float y);
 	
 
 };
