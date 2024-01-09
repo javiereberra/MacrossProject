@@ -28,7 +28,8 @@ public:
 	//gestionar el movimiento del cursor
 	void Movimiento(float deltaTime);
 	void Actualizar(float deltaTime);
-	bool Colision(float x, float y);
+	bool Colision(const FloatRect& rect);
 	
+	Sprite* getSpriteNaveJugador() { return nave; }
 
 };

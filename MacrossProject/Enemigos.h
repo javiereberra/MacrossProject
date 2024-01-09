@@ -30,7 +30,8 @@ public:
 	
 	void Actualizar(float deltaTime);
 
-	bool Colision(float x, float y);
+	bool Colision(const FloatRect& rect);
 
+	Sprite* getSpriteNaveEnemiga() { return naveEnemiga; }
 
 };

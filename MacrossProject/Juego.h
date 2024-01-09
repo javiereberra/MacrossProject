@@ -55,6 +55,10 @@ public:
 	void procesar_eventos();
 	// método para gestionar el disparo del mouse y colisiones
 
+	void detectar_colisiones();
+
+	
+
 	//destructor de juego
 	~Juego();
 };

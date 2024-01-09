@@ -73,6 +73,10 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	vidasText->setString(to_string(vidas));
 	vidasText->setPosition(50, 10);
 
+
+
+	
+
 }
 
 //metodo para iniciar un menu simple antes de iniciar el juego
@@ -143,6 +147,10 @@ void Juego::procesar_eventos() {
 }
 
 void Juego::actualizar() {
+
+
+	
+
 	fondo->move(-fondoSpeed * deltaTime, 0);
 
 	if (fondo->getPosition().x <= (-665.0f)) {
@@ -156,6 +164,8 @@ void Juego::actualizar() {
 		enemigos[i]->Actualizar(deltaTime); 
 	}
 	
+	detectar_colisiones();
+
 }
 
 void Juego::dibujar() {
@@ -177,5 +187,38 @@ void Juego::dibujar() {
 
 	ventana1->display();
 
+
+}
+
+void Juego::detectar_colisiones() {
+
+
+	Sprite* spriteNave = jugador->getSpriteNaveJugador();
+	
+	if (spriteNave) {
+		FloatRect jugadorRect = spriteNave->getGlobalBounds();
+
+
+		for (int i = 0; i < 5; ++i) {
+			if (enemigos[i]) {
+				// Obtener el sprite de cada enemigo
+				Sprite* spriteEnemigo = enemigos[i]->getSpriteNaveEnemiga();
+
+				FloatRect enemigoRect = spriteEnemigo->getGlobalBounds();
+
+				if (jugadorRect.intersects(enemigoRect)) {
+					ptos++;
+					puntajeText->setString("SCORE: " + to_string(ptos));
+
+				
+				}
+
+			}
+		}
+
+	}
+
+
+	
 
 }

@@ -41,13 +41,11 @@ void Enemigos::Actualizar(float deltaTime) {
 
 }
 
-bool Enemigos::Colision(float x, float y) {
+bool Enemigos::Colision(const FloatRect& rect) {
 
 	FloatRect bounds = naveEnemiga->getGlobalBounds();
 
-	if (bounds.contains(x, y)) {
-		return true;
-	}
+	return bounds.intersects(rect);
 
 
 }
