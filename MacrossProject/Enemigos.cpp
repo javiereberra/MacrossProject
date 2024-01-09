@@ -19,7 +19,7 @@ Enemigos::Enemigos()
 	velocidadX = 3.0f;
 	velocidadY = 2.5f;
 
-	//position = Vector2f(700.0f, 300.0f);
+	activo = true;
 }
 
 void Enemigos::Dibujar(RenderWindow* ventana1) {
@@ -48,5 +48,10 @@ bool Enemigos::Colision(const FloatRect& rect) {
 	return bounds.intersects(rect);
 
 
+}
+
+void Enemigos::desactivar() {
+
+	activo = false;
 }
 

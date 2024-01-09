@@ -159,10 +159,15 @@ void Juego::actualizar() {
 
 	jugador->Actualizar(deltaTime);
 
-	
-	for (int i = 0; i < 5; ++i) {  
-		enemigos[i]->Actualizar(deltaTime); 
+	for (int i = 0; i < 5; ++i) {
+		if (enemigos[i] && enemigos[i]->estaActivo()) {
+			enemigos[i]->Actualizar(deltaTime);
+		}
 	}
+	
+	//for (int i = 0; i < 5; ++i) {  
+	//	enemigos[i]->Actualizar(deltaTime); 
+	//}
 	
 	detectar_colisiones();
 
@@ -177,8 +182,10 @@ void Juego::dibujar() {
 	jugador->Dibujar(ventana1);
 
 	// para los 5 va un for
-	for (int i = 0; i < 5; ++i) {  
-		enemigos[i]->Dibujar(ventana1);  
+	for (int i = 0; i < 5; ++i) { 
+		if (enemigos[i] && enemigos[i]->estaActivo()) {
+			enemigos[i]->Dibujar(ventana1);
+		}
 	}
 
 	ventana1->draw(*puntajeText);
@@ -200,7 +207,7 @@ void Juego::detectar_colisiones() {
 
 
 		for (int i = 0; i < 5; ++i) {
-			if (enemigos[i]) {
+			if (enemigos[i] && enemigos[i]->estaActivo()) {
 				// Obtener el sprite de cada enemigo
 				Sprite* spriteEnemigo = enemigos[i]->getSpriteNaveEnemiga();
 
@@ -210,6 +217,7 @@ void Juego::detectar_colisiones() {
 					ptos++;
 					puntajeText->setString("SCORE: " + to_string(ptos));
 
+					enemigos[i]->desactivar();
 				
 				}
 

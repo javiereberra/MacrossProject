@@ -15,7 +15,7 @@ private:
 	float velocidadX;
 	float velocidadY;
 
-
+	bool activo;
 	
 
 public:
@@ -32,6 +32,13 @@ public:
 
 	bool Colision(const FloatRect& rect);
 
+	void desactivar();
+
+	bool estaActivo() const {
+		return activo;
+	}
+
 	Sprite* getSpriteNaveEnemiga() { return naveEnemiga; }
+
 
 };
