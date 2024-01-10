@@ -132,12 +132,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Disparo.cpp" />
     <ClCompile Include="Enemigos.cpp" />
     <ClCompile Include="Juego.cpp" />
     <ClCompile Include="Jugador.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Disparo.h" />
     <ClInclude Include="Enemigos.h" />
     <ClInclude Include="Juego.h" />
     <ClInclude Include="Jugador.h" />
