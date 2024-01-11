@@ -251,8 +251,10 @@ void Juego::detectar_colisiones() {
 				//detectar las colisiones entre jugadores y enemigos
 				if (jugadorRect.intersects(enemigoRect)) {
 					//sumar puntaje por enemigo eliminado
-					ptos++;
+					ptos += 10;
+					vidas -= 1;
 					puntajeText->setString("SCORE: " + to_string(ptos));
+					vidasText->setString(to_string(vidas));
 
 					//ajustar la posición de la explosión a la posición del enemigo colisionado
 					posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
@@ -264,13 +266,13 @@ void Juego::detectar_colisiones() {
 					enemigos[i]->desactivar();
 
 				}
-
+				//comprobar las colisiones de los disparos con los enemigos
 				for (int j = 0; j < jugador->getMaxDisparos(); ++j) {
 					if (jugador->getDisparosPool()[j]->estaActivo()) {
 						// Obtener el rectángulo de cada disparo
 						FloatRect disparoRect = jugador->getDisparosPool()[j]->bounds();
 
-						// Detectar colisiones entre disparo y enemigo
+						// Detectar colisiones 
 						if (enemigos[i]->Colision(disparoRect)) {
 							// Desactivar el disparo
 							jugador->getDisparosPool()[j]->desactivar();
