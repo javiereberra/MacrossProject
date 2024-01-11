@@ -2,6 +2,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include "Juego.h"
+#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -54,15 +55,15 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	
 	//los 5 enemigos con sus posiciones iniciales
 	enemigos[0] = new Enemigos();
-	enemigos[0]->position = Vector2f(690.0f, 300.0f);
+	enemigos[0]->position = Vector2f(890.0f, 300.0f);
 	enemigos[1] = new Enemigos();
-	enemigos[1]->position = Vector2f(700.0f, 500.0f);
+	enemigos[1]->position = Vector2f(840.0f, 500.0f);
 	enemigos[2] = new Enemigos();
-	enemigos[2]->position = Vector2f(710.0f, 100.0f);
+	enemigos[2]->position = Vector2f(810.0f, 100.0f);
 	enemigos[3] = new Enemigos();
-	enemigos[3]->position = Vector2f(680.0f, 400.0f);
+	enemigos[3]->position = Vector2f(880.0f, 400.0f);
 	enemigos[4] = new Enemigos();
-	enemigos[4]->position = Vector2f(730.0f, 200.0f);
+	enemigos[4]->position = Vector2f(830.0f, 200.0f);
 
 	//velocidad para la animación del fondo
 	fondoSpeed = 2.0f;
@@ -264,6 +265,13 @@ void Juego::detectar_colisiones() {
 					explosionActiva = true;
 					//desactivar el enemigo
 					enemigos[i]->desactivar();
+					//nuevo enemigo
+					delete enemigos[i];
+					//se crea un nuevo disparo y se activa
+					enemigos[i] = new Enemigos;
+					enemigos[i]->activar();
+					enemigos[i]->position = Vector2f(890.0f, 300.0f);
+					
 
 				}
 				//comprobar las colisiones de los disparos con los enemigos
@@ -285,6 +293,12 @@ void Juego::detectar_colisiones() {
 							explosionActiva = true;
 							// Desactivar el enemigo
 							enemigos[i]->desactivar();
+							delete enemigos[i];
+							//se crea un nuevo disparo y se activa
+							enemigos[i] = new Enemigos;
+							enemigos[i]->activar();
+							enemigos[i]->position = Vector2f(890.0f, 300.0f);
+
 
 							// Sumar puntaje por impacto de disparo
 							ptos += 10; // Puedes ajustar la puntuación según tu lógica

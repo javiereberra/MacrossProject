@@ -60,3 +60,8 @@ void Enemigos::desactivar() {
 	activo = false;
 }
 
+void Enemigos::activar() {
+
+	activo = true;
+}
+

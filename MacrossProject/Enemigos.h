@@ -39,6 +39,7 @@ public:
 
 	//un método para marcar como eliminado al enemigo y desactivarlo
 	void desactivar();
+	void activar();
 
 	//metodo para devolver el estado activo a Juego
 	bool estaActivo() const {
