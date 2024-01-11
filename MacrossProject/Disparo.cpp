@@ -11,14 +11,14 @@ Disparo::Disparo(const Vector2f posicionInicial) {
     //textura y sprite
     textura = new Texture;
     sprite = new Sprite;
-    textura->loadFromFile("ruta/de/la/shoot1.png");
+    textura->loadFromFile("assets/shoot1.png");
     sprite->setTexture(*textura);
     //la posición será obtenida de la clase jugador
     sprite->setPosition(posicionInicial);
     //para iniciarlo en falso
     activo = false;
     //la velocidad del disparo
-    velocidad = Vector2f(5.0f, 0.0f);
+    velocidad = Vector2f(7.0f, 0.0f);
 
 
 }
@@ -28,6 +28,11 @@ void Disparo::actualizar(float deltaTime) {
     if (activo) {
         sprite->move(velocidad * deltaTime);
         
+        //condición para desactivar cuando sale de la pantalla
+        Vector2f posicion = sprite->getPosition();
+        if (posicion.x > 800) {
+            desactivar();
+        }
     }
 }
 
@@ -57,3 +62,4 @@ Disparo::~Disparo() {
     delete textura;
     delete sprite;
 }
+

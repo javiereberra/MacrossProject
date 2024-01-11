@@ -23,6 +23,12 @@ Jugador::Jugador()
 
 	//posición inicial del sprite
 	position = Vector2f(100.0f, 300.0f);
+
+	//inicializar el pool de disparos
+	for (int i = 0; i < maxDisparos; ++i) {
+		disparosPool[i] = new Disparo(Vector2f(0.0f, 0.0f));
+	}
+
 }
 
 //para dibujar el sprite en la clase Juego
@@ -65,4 +71,36 @@ bool Jugador::Colision(const FloatRect& rect) {
 			return bounds.intersects(rect);
 	}
 
+//método para disparar
+void Jugador::disparar() {
+	for (int i = 0; i < maxDisparos; ++i){
+		//si el disparo no está activo, se desactiva y se elimina para liberar memoria
+		if (!disparosPool[i]->estaActivo()) {
+			disparosPool[i]->desactivar();
+			delete disparosPool[i];
+			//se crea un nuevo disparo y se activa
+			disparosPool[i] = new Disparo(nave->getPosition());
+			disparosPool[i]->activar();
+			break;
+		}
+	}
+
+}
+//si el disparo está activo, actualiza el movimiento
+void Jugador::gestionarDisparos(float deltaTime) {
+	for (int i = 0; i < maxDisparos; ++i) {
+		if (disparosPool[i]->estaActivo()) {
+			disparosPool[i]->actualizar(deltaTime);
+		}
+	}
+}
+
+void Jugador::dibujarDisparos(RenderWindow* ventana1) {
+
+	for (int i = 0; i < maxDisparos; ++i) {
+		if (disparosPool[i]->estaActivo()) {
+			disparosPool[i]->Dibujar(ventana1); disparosPool;
+			}
+	}
+}
 

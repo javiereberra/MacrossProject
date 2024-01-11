@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 #include "Jugador.h"
 #include "Enemigos.h"
+#include "Disparo.h"
 
 
 using namespace std;

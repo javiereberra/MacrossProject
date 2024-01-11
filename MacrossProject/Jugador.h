@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include "Disparo.h"
 
 using namespace sf;
 
@@ -19,6 +20,10 @@ private:
 	//posicion del sprite
 	Vector2f position;
 
+	//generar un pool de disparos
+	static const int maxDisparos = 5;
+	Disparo* disparosPool[maxDisparos];
+
 public:
 	//constructor
 	Jugador();
@@ -33,5 +38,13 @@ public:
 	bool Colision(const FloatRect& rect);
 	//para obtener el sprite en la clase Juego
 	Sprite* getSpriteNaveJugador() { return nave; }
+
+	//método para disparar
+	void disparar();
+	//método para gestionar los disparos
+	void gestionarDisparos(float deltaTime);
+	//método para dibujar disparos
+	void dibujarDisparos(RenderWindow* deltaTime);
+
 
 };

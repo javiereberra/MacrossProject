@@ -30,4 +30,9 @@ public:
 
     //obtener el rectángulo del sprite
     FloatRect bounds() const;
+
+    //para devolver el estado activo a otras clases
+    bool estaActivo() const {
+        return activo;
+    }
 };

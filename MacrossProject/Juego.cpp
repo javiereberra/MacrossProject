@@ -154,7 +154,13 @@ void Juego::procesar_eventos() {
 		case Event::Closed:
 			ventana1->close();
 			break;
+		case Event::KeyPressed:
+		// Presionar SPACE para disparar
+		if (evento1.key.code == Keyboard::Key::Space) {
+			jugador->disparar();
 		}
+		break;
+}
 	}
 
 	jugador->Movimiento(deltaTime);
@@ -181,6 +187,10 @@ void Juego::actualizar() {
 			enemigos[i]->Actualizar(deltaTime);
 		}
 	}
+
+	// actualizar los disparos
+	jugador->gestionarDisparos(deltaTime);
+
 	//detectar las colisiones	
 	detectar_colisiones();
 
@@ -201,6 +211,8 @@ void Juego::dibujar() {
 			enemigos[i]->Dibujar(ventana1);
 		}
 	}
+	//dibujar disparos
+	jugador->dibujarDisparos(ventana1);
 	//dibujar los puntaje y las vidas
 	ventana1->draw(*puntajeText);
 	ventana1->draw(*vidasText);
