@@ -233,7 +233,9 @@ void Juego::detectar_colisiones() {
 
 	//sprite para obtener el sprite de jugador
 	Sprite* spriteNave = jugador->getSpriteNaveJugador();
-	
+
+
+
 	//obtener el rectangulo del sprite de jugador
 	if (spriteNave) {
 		FloatRect jugadorRect = spriteNave->getGlobalBounds();
@@ -245,10 +247,10 @@ void Juego::detectar_colisiones() {
 				Sprite* spriteEnemigo = enemigos[i]->getSpriteNaveEnemiga();
 				// obtener el rectángulo de cada sprite
 				FloatRect enemigoRect = spriteEnemigo->getGlobalBounds();
-				
+
 				//detectar las colisiones entre jugadores y enemigos
 				if (jugadorRect.intersects(enemigoRect)) {
-				//sumar puntaje por enemigo eliminado
+					//sumar puntaje por enemigo eliminado
 					ptos++;
 					puntajeText->setString("SCORE: " + to_string(ptos));
 
@@ -260,15 +262,44 @@ void Juego::detectar_colisiones() {
 					explosionActiva = true;
 					//desactivar el enemigo
 					enemigos[i]->desactivar();
-				
+
+				}
+
+				for (int j = 0; j < jugador->getMaxDisparos(); ++j) {
+					if (jugador->getDisparosPool()[j]->estaActivo()) {
+						// Obtener el rectángulo de cada disparo
+						FloatRect disparoRect = jugador->getDisparosPool()[j]->bounds();
+
+						// Detectar colisiones entre disparo y enemigo
+						if (enemigos[i]->Colision(disparoRect)) {
+							// Desactivar el disparo
+							jugador->getDisparosPool()[j]->desactivar();
+
+							// Ajustar la posición de la explosión a la posición del enemigo colisionado
+							posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
+							explSprite->setPosition(posicionExplosion);
+
+							// Activar la explosión
+							explosionActiva = true;
+							// Desactivar el enemigo
+							enemigos[i]->desactivar();
+
+							// Sumar puntaje por impacto de disparo
+							ptos += 10; // Puedes ajustar la puntuación según tu lógica
+							puntajeText->setString("SCORE: " + to_string(ptos));
+						}
+
+
+
+
+					}
 				}
 
 			}
+
+
+
+
 		}
-
 	}
-
-
-	
-
 }

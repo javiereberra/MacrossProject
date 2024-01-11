@@ -45,6 +45,16 @@ public:
 	void gestionarDisparos(float deltaTime);
 	//método para dibujar disparos
 	void dibujarDisparos(RenderWindow* deltaTime);
+	
+	//metodo para obtener el arreglo de disparos en Juego
+	Disparo** getDisparosPool() {
+		return disparosPool;
+	}
+	//metodo para obtener el max de disparos en Juego
+	int getMaxDisparos() const {
+		return maxDisparos;
+	}
+	
 
 
 };
