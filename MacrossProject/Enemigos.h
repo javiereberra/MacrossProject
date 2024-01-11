@@ -12,9 +12,11 @@ private:
 	Texture* enemigoTx;
 	Sprite* naveEnemiga;
 
+	//velocidad en x e y, aunque quizás sólo utilicemos x
 	float velocidadX;
 	float velocidadY;
 
+	//booleano para determinar si el enemigo está elimnado y deba dibujarse o no
 	bool activo;
 	
 
@@ -22,22 +24,27 @@ public:
 	//constructor
 	Enemigos();
 
+	//vector para la posición en x e y
 	Vector2f position;
 
+	//dibujar en la ventana
 	void Dibujar(RenderWindow* ventana1);
 
-	//gestionar el movimiento del cursor
+	//actualizar el movimiento con el deltaTime de Juego
 	
 	void Actualizar(float deltaTime);
 
+	//booleano para comprobar la colisión del rectangulo del sprite
 	bool Colision(const FloatRect& rect);
 
+	//un método para marcar como eliminado al enemigo y desactivarlo
 	void desactivar();
 
+	//metodo para devolver el estado activo a Juego
 	bool estaActivo() const {
 		return activo;
 	}
-
+	//metodo para obtener el sprite en la clase Juego
 	Sprite* getSpriteNaveEnemiga() { return naveEnemiga; }
 
 

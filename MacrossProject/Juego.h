@@ -13,39 +13,57 @@ class Juego {
 
 private:
 
-	//variables ventana
+	//ventana
 	RenderWindow* ventana1;
 
-	//variables para el fondo
+	//Textura y sprite para el fondo
 	Texture* textura1;
 	Sprite* fondo;
+
+	//Textura y sprite para un menu de inicio
 	Texture* textura2;
 	Sprite* fondoMenu;
+
+	//Textura y sprite para un marcador de vidas
 	Texture* textura3;
 	Sprite* vidasSprite;
+
+	//Textura y sprite para una explosión cuando naves son eliminadas
 	Texture* explText;
 	Sprite* explSprite;
 
-
+	//fuente para todos los textos del juego
 	Font* fuente;
+	//texto para el menu de inicio
 	Text* menu;
 
+	//variable de jugador
 	Jugador* jugador;
 	
+	//arreglo para 5 enemigos comunes
 	Enemigos* enemigos[5];
 
+	//deltaTime para gestionar los frames por segundos
 	float deltaTime;
 
+	//variables para las vidas y puntaje del juegador
 	int vidas;
 	int ptos;
 
+	//textos para las vidas y puntajes
 	Text* vidasText;
 	Text* puntajeText;
 
+	//un booleando para iniciar el loop del juego desde el menu
 	bool start;
+
+	//velocidad para aplicar y animar al fondo del nivel
 	float fondoSpeed;
+
+	//booleando para determinar cuándo se producen las explosiones
 	bool explosionActiva;
 
+	//posición de las explosiones
 	Vector2f posicionExplosion;
 
 public:
@@ -59,8 +77,8 @@ public:
 	void dibujar();
 	void actualizar();
 	void procesar_eventos();
-	// método para gestionar el disparo del mouse y colisiones
-
+	
+	// método para gestionar colisiones
 	void detectar_colisiones();
 
 	

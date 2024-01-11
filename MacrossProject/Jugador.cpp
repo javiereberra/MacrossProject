@@ -5,6 +5,7 @@
 
 using namespace sf;
 
+//Constructor
 Jugador::Jugador()
 {
 	//para definir la textura y sprite de la mira con su posición, origen y tamaño.
@@ -16,19 +17,22 @@ Jugador::Jugador()
 	nave->setScale(1.5f, 1.5f);
 
 	
-	
+	//velocidades en x e y
 	velocidadX = 3.0f;
 	velocidadY = 3.0f;
 
+	//posición inicial del sprite
 	position = Vector2f(100.0f, 300.0f);
 }
 
+//para dibujar el sprite en la clase Juego
 void Jugador::Dibujar(RenderWindow* ventana1) {
 
 	ventana1->draw(*nave);
 
 }
-//métodos para el movimiento y obtener la posición de la mira
+
+//para manejar el movimiento con las flechas del teclado
 void Jugador::Movimiento(float deltaTime) {
 
 	if (Keyboard::isKeyPressed(Keyboard::Key::Up)) {
@@ -43,21 +47,17 @@ void Jugador::Movimiento(float deltaTime) {
 	if (Keyboard::isKeyPressed(Keyboard::Key::Right)) {
 		position.x += velocidadX * deltaTime;
 	}
-
 	
-
-
-
 }
 
+//para actualizar la posición del sprite
 void Jugador::Actualizar(float deltaTime) {
-
-	
 
 	nave->setPosition(position);
 
 }
 
+//booleano para comprobar la colisión
 bool Jugador::Colision(const FloatRect& rect) {
 
 	FloatRect bounds = nave->getGlobalBounds();
