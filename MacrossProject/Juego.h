@@ -66,6 +66,10 @@ private:
 
 	//posición de las explosiones
 	Vector2f posicionExplosion;
+	
+	int posAleatoria;
+
+	Vector2f posiciones[10];
 
 public:
 	//constructor de juego

@@ -54,16 +54,27 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	jugador = new Jugador();
 	
 	//los 5 enemigos con sus posiciones iniciales
+	posiciones[0] = Vector2f(890.0f, 100.0f);
+	posiciones[1] = Vector2f(890.0f, 150.0f);
+	posiciones[2] = Vector2f(850.0f, 200.0f);
+	posiciones[3] = Vector2f(830.0f, 250.0f);
+	posiciones[4] = Vector2f(850.0f, 300.0f);
+	posiciones[5] = Vector2f(890.0f, 350.0f);
+	posiciones[6] = Vector2f(830.0f, 400.0f);
+	posiciones[7] = Vector2f(890.0f, 450.0f);
+	posiciones[8] = Vector2f(850.0f, 500.0f);
+	posiciones[9] = Vector2f(830.0f, 550.0f);
+
 	enemigos[0] = new Enemigos();
-	enemigos[0]->position = Vector2f(890.0f, 300.0f);
+	enemigos[0]->position = posiciones[0];
 	enemigos[1] = new Enemigos();
-	enemigos[1]->position = Vector2f(840.0f, 500.0f);
+	enemigos[1]->position = posiciones[2];
 	enemigos[2] = new Enemigos();
-	enemigos[2]->position = Vector2f(810.0f, 100.0f);
+	enemigos[2]->position = posiciones[4];
 	enemigos[3] = new Enemigos();
-	enemigos[3]->position = Vector2f(880.0f, 400.0f);
+	enemigos[3]->position = posiciones[6];
 	enemigos[4] = new Enemigos();
-	enemigos[4]->position = Vector2f(830.0f, 200.0f);
+	enemigos[4]->position = posiciones[8];
 
 	//velocidad para la animación del fondo
 	fondoSpeed = 2.0f;
@@ -95,7 +106,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	//para inciar en falso las explosiones
 	explosionActiva = false;
 	
-
+	posAleatoria = 0;
 }
 
 //metodo para iniciar un menu simple antes de iniciar el juego
@@ -270,7 +281,8 @@ void Juego::detectar_colisiones() {
 					//se crea un nuevo disparo y se activa
 					enemigos[i] = new Enemigos;
 					enemigos[i]->activar();
-					enemigos[i]->position = Vector2f(890.0f, 300.0f);
+					posAleatoria = rand() % 10;
+					enemigos[i]->position = posiciones[posAleatoria];
 					
 
 				}
@@ -297,7 +309,8 @@ void Juego::detectar_colisiones() {
 							//se crea un nuevo disparo y se activa
 							enemigos[i] = new Enemigos;
 							enemigos[i]->activar();
-							enemigos[i]->position = Vector2f(890.0f, 300.0f);
+							posAleatoria = rand() % 10;
+							enemigos[i]->position = posiciones[posAleatoria];
 
 
 							// Sumar puntaje por impacto de disparo
