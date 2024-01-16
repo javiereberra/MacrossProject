@@ -5,6 +5,7 @@
 #include "Jugador.h"
 #include "Enemigos.h"
 #include "Disparo.h"
+#include "Boss.h"
 
 
 using namespace std;
@@ -43,6 +44,9 @@ private:
 	
 	//arreglo para 5 enemigos comunes
 	Enemigos* enemigos[5];
+
+	//variable boss
+	Boss* boss;
 
 	//deltaTime para gestionar los frames por segundos
 	float deltaTime;

@@ -52,6 +52,9 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 
 	//jugador
 	jugador = new Jugador();
+
+	//boss
+	boss = new Boss();
 	
 	//establecer las posiciones de spawn de los enemigos
 	posiciones[0] = Vector2f(890.0f, 100.0f);
@@ -202,6 +205,11 @@ void Juego::actualizar() {
 			enemigos[i]->Actualizar(deltaTime);
 		}
 	}
+	//actualizar el comportamiento del boss
+	if (boss->estaActivo()) {
+		boss->Actualizar(deltaTime);
+	}
+
 
 	// actualizar los disparos
 	jugador->gestionarDisparos(deltaTime);
@@ -211,6 +219,7 @@ void Juego::actualizar() {
 	//detectar las colisiones	
 	detectar_colisiones();
 
+	//metodo para dificultad
 	dificultad();
 
 }
@@ -230,6 +239,11 @@ void Juego::dibujar() {
 			enemigos[i]->Dibujar(ventana1);
 		}
 	}
+	// dibjar al boss sólo si está activo
+	if (boss->estaActivo()) {
+		boss->Dibujar(ventana1);
+	}
+
 	//dibujar disparos
 	jugador->dibujarDisparos(ventana1);
 
@@ -345,14 +359,14 @@ void Juego::detectar_colisiones() {
 }
 
 void Juego::dificultad() {
-
+//condicionales para incrementar la dificultad aumentando la velocidad de los enemigos
 
 	if (ptos >= 100) {
 
 		for (int i = 0; i < 5; ++i) {
 			if (enemigos[i] && enemigos[i]->estaActivo()) {
 				// Establecer la nueva velocidadX
-				enemigos[i]->setVelocidadX(4.5f); // Puedes ajustar el valor según tus necesidades
+				enemigos[i]->setVelocidadX(4.5f);
 			}
 		}
 
@@ -363,7 +377,7 @@ void Juego::dificultad() {
 		for (int i = 0; i < 5; ++i) {
 			if (enemigos[i] && enemigos[i]->estaActivo()) {
 				// Establecer la nueva velocidadX
-				enemigos[i]->setVelocidadX(6.0f); // Puedes ajustar el valor según tus necesidades
+				enemigos[i]->setVelocidadX(6.0f);
 			}
 		}
 
@@ -374,9 +388,23 @@ void Juego::dificultad() {
 		for (int i = 0; i < 5; ++i) {
 			if (enemigos[i] && enemigos[i]->estaActivo()) {
 				// Establecer la nueva velocidadX
-				enemigos[i]->setVelocidadX(7.5f); // Puedes ajustar el valor según tus necesidades
+				enemigos[i]->setVelocidadX(7.5f);
 			}
 		}
 
 	}
+	// condicional para desactivar enemigos y activar al boss
+	if (ptos >= 400) {
+
+		for (int i = 0; i < 5; ++i) {
+			if (enemigos[i] && enemigos[i]->estaActivo()) {
+				// Establecer la nueva velocidadX
+				enemigos[i]->desactivar();
+			}
+		}
+	boss->activar();
+	
+	}
+
+
 }
