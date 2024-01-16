@@ -53,7 +53,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	//jugador
 	jugador = new Jugador();
 	
-	//los 5 enemigos con sus posiciones iniciales
+	//establecer las posiciones de spawn de los enemigos
 	posiciones[0] = Vector2f(890.0f, 100.0f);
 	posiciones[1] = Vector2f(890.0f, 150.0f);
 	posiciones[2] = Vector2f(850.0f, 200.0f);
@@ -65,6 +65,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	posiciones[8] = Vector2f(850.0f, 500.0f);
 	posiciones[9] = Vector2f(830.0f, 550.0f);
 
+	//los 5 enemigos con sus posiciones iniciales
 	enemigos[0] = new Enemigos();
 	enemigos[0]->position = posiciones[0];
 	enemigos[1] = new Enemigos();
@@ -107,6 +108,8 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	explosionActiva = false;
 	
 	posAleatoria = 0;
+
+	
 }
 
 //metodo para iniciar un menu simple antes de iniciar el juego
@@ -203,8 +206,12 @@ void Juego::actualizar() {
 	// actualizar los disparos
 	jugador->gestionarDisparos(deltaTime);
 
+	
+
 	//detectar las colisiones	
 	detectar_colisiones();
+
+	dificultad();
 
 }
 
@@ -225,6 +232,8 @@ void Juego::dibujar() {
 	}
 	//dibujar disparos
 	jugador->dibujarDisparos(ventana1);
+
+	
 	//dibujar los puntaje y las vidas
 	ventana1->draw(*puntajeText);
 	ventana1->draw(*vidasText);
@@ -278,9 +287,10 @@ void Juego::detectar_colisiones() {
 					enemigos[i]->desactivar();
 					//nuevo enemigo
 					delete enemigos[i];
-					//se crea un nuevo disparo y se activa
+					//se crea un nuevo enemigo y se activa
 					enemigos[i] = new Enemigos;
 					enemigos[i]->activar();
+					//se genera una posicion aleatoria para el spawn
 					posAleatoria = rand() % 10;
 					enemigos[i]->position = posiciones[posAleatoria];
 					
@@ -306,9 +316,10 @@ void Juego::detectar_colisiones() {
 							// Desactivar el enemigo
 							enemigos[i]->desactivar();
 							delete enemigos[i];
-							//se crea un nuevo disparo y se activa
+							//se crea un nuevo enemigo y se activa
 							enemigos[i] = new Enemigos;
 							enemigos[i]->activar();
+							//se genera una posicion aleatoria para el spawn
 							posAleatoria = rand() % 10;
 							enemigos[i]->position = posiciones[posAleatoria];
 
@@ -330,5 +341,42 @@ void Juego::detectar_colisiones() {
 
 
 		}
+	}
+}
+
+void Juego::dificultad() {
+
+
+	if (ptos >= 100) {
+
+		for (int i = 0; i < 5; ++i) {
+			if (enemigos[i] && enemigos[i]->estaActivo()) {
+				// Establecer la nueva velocidadX
+				enemigos[i]->setVelocidadX(4.5f); // Puedes ajustar el valor según tus necesidades
+			}
+		}
+
+	}
+
+	if (ptos >= 200) {
+
+		for (int i = 0; i < 5; ++i) {
+			if (enemigos[i] && enemigos[i]->estaActivo()) {
+				// Establecer la nueva velocidadX
+				enemigos[i]->setVelocidadX(6.0f); // Puedes ajustar el valor según tus necesidades
+			}
+		}
+
+	}
+
+	if (ptos >= 300) {
+
+		for (int i = 0; i < 5; ++i) {
+			if (enemigos[i] && enemigos[i]->estaActivo()) {
+				// Establecer la nueva velocidadX
+				enemigos[i]->setVelocidadX(7.5f); // Puedes ajustar el valor según tus necesidades
+			}
+		}
+
 	}
 }

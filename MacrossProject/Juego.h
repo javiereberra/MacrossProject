@@ -71,6 +71,8 @@ private:
 
 	Vector2f posiciones[10];
 
+	
+
 public:
 	//constructor de juego
 	Juego(int ancho, int alto, std::string titulo);
@@ -86,7 +88,10 @@ public:
 	// método para gestionar colisiones
 	void detectar_colisiones();
 
+	//un metodo para aumentar la dificultard
+	void dificultad();
 	
+
 
 	//destructor de juego
 	~Juego();

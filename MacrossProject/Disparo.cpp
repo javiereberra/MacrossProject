@@ -6,7 +6,7 @@
 using namespace sf;
 
 
-//constructor
+//constructor para el disparo del jugador
 Disparo::Disparo(const Vector2f posicionInicial) {
     //textura y sprite
     textura = new Texture;
@@ -22,6 +22,9 @@ Disparo::Disparo(const Vector2f posicionInicial) {
 
 
 }
+
+
+
 
 //actualizar la posición del disparo
 void Disparo::actualizar(float deltaTime) {

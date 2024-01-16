@@ -48,5 +48,9 @@ public:
 	//metodo para obtener el sprite en la clase Juego
 	Sprite* getSpriteNaveEnemiga() { return naveEnemiga; }
 
+	//para poder modificar la velocidad de los enemigos en Juego
+	void setVelocidadX(float nuevaVelocidadX) {
+		velocidadX = nuevaVelocidadX;
+	}
 
 };

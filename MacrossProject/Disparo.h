@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 
 using namespace sf;
+using namespace std;
 
 class Disparo {
 private:
@@ -17,7 +18,9 @@ private:
 public:
     //constructor del disparo con posición inicial obtenida de Jugador
     Disparo(const Vector2f posicionInicial);
-    //destructor de disparo
+    
+
+     //destructor de disparo
     ~Disparo();
 
     //actualizar movimiento
@@ -35,4 +38,6 @@ public:
     bool estaActivo() const {
         return activo;
     }
+
+    
 };
