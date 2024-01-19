@@ -18,7 +18,7 @@ private:
 
 	//booleano para determinar si el enemigo está elimnado y deba dibujarse o no
 	bool activo;
-
+	int vida;
 
 public:
 	//constructor
@@ -48,6 +48,15 @@ public:
 	//metodo para obtener el sprite en la clase Juego
 	Sprite* getSpriteBoss() { return bossSprite; }
 
-	
+	//método para actualizar la vida del boss
+	void modificarVida(int nuevaVida) {
+		vida = nuevaVida;
+	}
+
+	// Método para obtener la vida actual
+	int obtenerVida() const {
+		return vida;
+	}
+
 
 }; 

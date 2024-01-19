@@ -176,6 +176,8 @@ void Juego::procesar_eventos() {
 		// Presionar SPACE para disparar
 		if (evento1.key.code == Keyboard::Key::Space) {
 			jugador->disparar();
+			
+			
 		}
 		break;
 }
@@ -307,9 +309,9 @@ void Juego::detectar_colisiones() {
 					//se genera una posicion aleatoria para el spawn
 					posAleatoria = rand() % 10;
 					enemigos[i]->position = posiciones[posAleatoria];
-					
-
+				
 				}
+
 				//comprobar las colisiones de los disparos con los enemigos
 				for (int j = 0; j < jugador->getMaxDisparos(); ++j) {
 					if (jugador->getDisparosPool()[j]->estaActivo()) {
@@ -342,16 +344,37 @@ void Juego::detectar_colisiones() {
 							ptos += 10; // Puedes ajustar la puntuación según tu lógica
 							puntajeText->setString("SCORE: " + to_string(ptos));
 						}
+						
 
-
-
-
+						
 					}
 				}
 
 			}
+			//termine bucle de enemigo activo 
+			for (int j = 0; j < jugador->getMaxDisparos(); ++j) {
+				if (jugador->getDisparosPool()[j]->estaActivo()) {
+					// Obtener el rectángulo de cada disparo
+					FloatRect disparoRect = jugador->getDisparosPool()[j]->bounds();
 
+					// comprobar colisiones entre disparos y boss
+					if ((boss->estaActivo()) && (boss->Colision(disparoRect))) {
 
+						//mismo proceso que con enemigo
+						jugador->getDisparosPool()[j]->desactivar();
+						posicionExplosion = boss->getSpriteBoss()->getPosition();
+						explSprite->setPosition(posicionExplosion);
+						explosionActiva = true;
+						//restar una vida a boss
+						int nuevaVida = boss->obtenerVida();
+						nuevaVida -= 1;
+						boss->modificarVida(nuevaVida);
+						//controlar por consola
+						std::cout << "Vida actual del Boss: " << boss->obtenerVida() << std::endl;
+
+					}
+				}
+			}
 
 
 		}

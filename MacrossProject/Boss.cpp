@@ -23,6 +23,7 @@ Boss::Boss()
 	velocidadY = 0.8f;
 
 	activo = false;
+	vida = 10;
 }
 
 //para dibujar el sprite en la clase Juego
