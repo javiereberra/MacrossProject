@@ -92,6 +92,12 @@ public:
 	
 	// método para gestionar colisiones
 	void detectar_colisiones();
+	// para organizar las distintas colisiones
+	void colisiones_jugador_enemigos();
+	void colisiones_disparos_enemigos();
+	void colisiones_misiles_enemigos();
+	void colisiones_disparos_boss();
+	void colisiones_misiles_boss();
 
 	//un metodo para aumentar la dificultard
 	void dificultad();

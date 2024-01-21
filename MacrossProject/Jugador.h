@@ -70,5 +70,13 @@ public:
 	}
 	
 
+	//metodo para obtener el arreglo de disparos en Juego
+	Misiles** getMisilesPool() {
+		return misilesPool;
+	}
+	//metodo para obtener el max de disparos en Juego
+	int getMaxMisiles() const {
+		return maxMisiles;
+	}
 
 };

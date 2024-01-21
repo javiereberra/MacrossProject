@@ -275,6 +275,16 @@ void Juego::dibujar() {
 //detección de colisiones
 void Juego::detectar_colisiones() {
 
+	colisiones_jugador_enemigos();
+	colisiones_disparos_enemigos();
+	colisiones_misiles_enemigos();
+	colisiones_disparos_boss();
+	colisiones_misiles_boss();
+
+
+}
+
+void Juego::colisiones_jugador_enemigos() {
 	//sprite para obtener el sprite de jugador
 	Sprite* spriteNave = jugador->getSpriteNaveJugador();
 
@@ -316,59 +326,118 @@ void Juego::detectar_colisiones() {
 					//se genera una posicion aleatoria para el spawn
 					posAleatoria = rand() % 10;
 					enemigos[i]->position = posiciones[posAleatoria];
-				
+
 				}
-
-				//comprobar las colisiones de los disparos con los enemigos
-				for (int j = 0; j < jugador->getMaxDisparos(); ++j) {
-					if (jugador->getDisparosPool()[j]->estaActivo()) {
-						// Obtener el rectángulo de cada disparo
-						FloatRect disparoRect = jugador->getDisparosPool()[j]->bounds();
-
-						// Detectar colisiones 
-						if (enemigos[i]->Colision(disparoRect)) {
-							// Desactivar el disparo
-							jugador->getDisparosPool()[j]->desactivar();
-
-							// Ajustar la posición de la explosión a la posición del enemigo colisionado
-							posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
-							explSprite->setPosition(posicionExplosion);
-
-							// Activar la explosión
-							explosionActiva = true;
-							// Desactivar el enemigo
-							enemigos[i]->desactivar();
-							delete enemigos[i];
-							//se crea un nuevo enemigo y se activa
-							enemigos[i] = new Enemigos;
-							enemigos[i]->activar();
-							//se genera una posicion aleatoria para el spawn
-							posAleatoria = rand() % 10;
-							enemigos[i]->position = posiciones[posAleatoria];
-
-
-							// Sumar puntaje por impacto de disparo
-							ptos += 10; // Puedes ajustar la puntuación según tu lógica
-							puntajeText->setString("SCORE: " + to_string(ptos));
-						}
-						
-
-						
-					}
-				}
-
 			}
-			//termine bucle de enemigo activo 
+		}
+	}
+}
+
+void Juego::colisiones_disparos_enemigos() {
+	
+	//Comprobar con los enemigos que estén activos
+	for (int i = 0; i < 5; ++i) {
+		if (enemigos[i] && enemigos[i]->estaActivo()) {
+			// Obtener el sprite de cada enemigo
+			Sprite* spriteEnemigo = enemigos[i]->getSpriteNaveEnemiga();
+			// obtener el rectángulo de cada sprite
+			FloatRect enemigoRect = spriteEnemigo->getGlobalBounds();
+			//comprobar las colisiones de los disparos con los enemigos
 			for (int j = 0; j < jugador->getMaxDisparos(); ++j) {
 				if (jugador->getDisparosPool()[j]->estaActivo()) {
 					// Obtener el rectángulo de cada disparo
 					FloatRect disparoRect = jugador->getDisparosPool()[j]->bounds();
 
-					// comprobar colisiones entre disparos y boss
-					if ((boss->estaActivo()) && (boss->Colision(disparoRect))) {
-
-						//mismo proceso que con enemigo
+					// Detectar colisiones 
+					if (enemigos[i]->Colision(disparoRect)) {
+						// Desactivar el disparo
 						jugador->getDisparosPool()[j]->desactivar();
+
+						// Ajustar la posición de la explosión a la posición del enemigo colisionado
+						posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
+						explSprite->setPosition(posicionExplosion);
+
+						// Activar la explosión
+						explosionActiva = true;
+						// Desactivar el enemigo
+						enemigos[i]->desactivar();
+						delete enemigos[i];
+						//se crea un nuevo enemigo y se activa
+						enemigos[i] = new Enemigos;
+						enemigos[i]->activar();
+						//se genera una posicion aleatoria para el spawn
+						posAleatoria = rand() % 10;
+						enemigos[i]->position = posiciones[posAleatoria];
+
+
+						// Sumar puntaje por impacto de disparo
+						ptos += 10; // Puedes ajustar la puntuación según tu lógica
+						puntajeText->setString("SCORE: " + to_string(ptos));
+					}
+				}
+			}
+		}
+	}
+}
+void Juego::colisiones_misiles_enemigos() {
+	//Comprobar con los enemigos que estén activos
+	for (int i = 0; i < 5; ++i) {
+		if (enemigos[i] && enemigos[i]->estaActivo()) {
+			// Obtener el sprite de cada enemigo
+			Sprite* spriteEnemigo = enemigos[i]->getSpriteNaveEnemiga();
+			// obtener el rectángulo de cada sprite
+			FloatRect enemigoRect = spriteEnemigo->getGlobalBounds();
+			//comprobar las colisiones de los misiles con los enemigos
+			for (int j = 0; j < jugador->getMaxMisiles(); ++j) {
+				if (jugador->getMisilesPool()[j]->estaActivo()) {
+					// Obtener el rectángulo de cada misil
+					FloatRect misilesRect = jugador->getMisilesPool()[j]->bounds();
+
+					// Detectar colisiones 
+					if (enemigos[i]->Colision(misilesRect)) {
+						// Desactivar el misil
+						jugador->getMisilesPool()[j]->desactivar();
+
+						// Ajustar la posición de la explosión a la posición del enemigo colisionado
+						posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
+						explSprite->setPosition(posicionExplosion);
+
+						// Activar la explosión
+						explosionActiva = true;
+						// Desactivar el enemigo
+						enemigos[i]->desactivar();
+						delete enemigos[i];
+						//se crea un nuevo enemigo y se activa
+						enemigos[i] = new Enemigos;
+						enemigos[i]->activar();
+						//se genera una posicion aleatoria para el spawn
+						posAleatoria = rand() % 10;
+						enemigos[i]->position = posiciones[posAleatoria];
+
+
+						// Sumar puntaje por impacto de misil
+						ptos += 10; // Puedes ajustar la puntuación según tu lógica
+						puntajeText->setString("SCORE: " + to_string(ptos));
+					}
+				}
+			}
+		}
+	}
+}
+void Juego::colisiones_disparos_boss() {
+	
+			//comprobar las colisiones de los disparos con el boss
+			for (int i = 0; i < jugador->getMaxDisparos(); ++i) {
+				if (jugador->getDisparosPool()[i]->estaActivo()) {
+					// Obtener el rectángulo de cada disparo
+					FloatRect disparoRect = jugador->getDisparosPool()[i]->bounds();
+
+					// Detectar colisiones 
+					if ((boss->estaActivo()) && (boss->Colision(disparoRect))) {
+						// Desactivar el disparo
+						jugador->getDisparosPool()[i]->desactivar();
+
+						//posicion del impacto
 						posicionExplosion = boss->getSpriteBoss()->getPosition();
 						explSprite->setPosition(posicionExplosion);
 						explosionActiva = true;
@@ -378,15 +447,42 @@ void Juego::detectar_colisiones() {
 						boss->modificarVida(nuevaVida);
 						//controlar por consola
 						std::cout << "Vida actual del Boss: " << boss->obtenerVida() << std::endl;
-
 					}
 				}
 			}
+		
 
+}
 
+void Juego::colisiones_misiles_boss() {
+	//comprobar las colisiones de los disparos con el boss
+	for (int i = 0; i < jugador->getMaxMisiles(); ++i) {
+		if (jugador->getMisilesPool()[i]->estaActivo()) {
+			// Obtener el rectángulo de cada disparo
+			FloatRect misilesRect = jugador->getMisilesPool()[i]->bounds();
+
+			// Detectar colisiones 
+			if ((boss->estaActivo()) && (boss->Colision(misilesRect))) {
+				// Desactivar el disparo
+				jugador->getMisilesPool()[i]->desactivar();
+
+				//posicion del impacto
+				posicionExplosion = boss->getSpriteBoss()->getPosition();
+				explSprite->setPosition(posicionExplosion);
+				explosionActiva = true;
+				//restar una vida a boss
+				int nuevaVida = boss->obtenerVida();
+				nuevaVida -= 10;
+				boss->modificarVida(nuevaVida);
+				//controlar por consola
+				std::cout << "Vida actual del Boss: " << boss->obtenerVida() << std::endl;
+			}
 		}
 	}
+
+
 }
+
 
 void Juego::dificultad() {
 //condicionales para incrementar la dificultad aumentando la velocidad de los enemigos
