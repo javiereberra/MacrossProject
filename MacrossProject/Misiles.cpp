@@ -13,12 +13,14 @@ Misiles::Misiles(const Vector2f posicionInicial) {
     sprite = new Sprite;
     textura->loadFromFile("assets/misil1.png");
     sprite->setTexture(*textura);
+    sprite->setScale(2.0f, 2.0f);
     //la posición será obtenida de la clase jugador
     sprite->setPosition(posicionInicial);
     //para iniciarlo en falso
     activo = false;
     //la velocidad del disparo
-    velocidad = Vector2f(1.0f, 0.0f);
+    velocidad = Vector2f(0.0f, 0.0f);
+    aceleracion = 0.1f;
 
 
 }
@@ -29,6 +31,10 @@ Misiles::Misiles(const Vector2f posicionInicial) {
 //actualizar la posición del disparo
 void Misiles::actualizar(float deltaTime) {
     if (activo) {
+
+        velocidad.x += aceleracion * deltaTime;
+
+
         sprite->move(velocidad * deltaTime);
 
         //condición para desactivar cuando sale de la pantalla

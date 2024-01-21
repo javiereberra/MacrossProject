@@ -13,6 +13,7 @@ private:
     Sprite* sprite;
     Vector2f velocidad;
     bool activo;
+    float aceleracion;
 
 
 public:
