@@ -29,6 +29,11 @@ Jugador::Jugador()
 		disparosPool[i] = new Disparo(Vector2f(0.0f, 0.0f));
 	}
 
+	//inicializar el pool de misiles
+	for (int i = 0; i < maxMisiles; ++i) {
+		misilesPool[i] = new Misiles(Vector2f(0.0f, 0.0f));
+	}
+
 }
 
 //para dibujar el sprite en la clase Juego
@@ -86,11 +91,38 @@ void Jugador::disparar() {
 	}
 
 }
+
+
+//método para disparar misiles
+void Jugador::lanzarMisiles() {
+	for (int i = 0; i < maxMisiles; ++i) {
+		//si el disparo no está activo, se desactiva y se elimina para liberar memoria
+		if (!misilesPool[i]->estaActivo()) {
+			misilesPool[i]->desactivar();
+			delete misilesPool[i];
+			//se crea un nuevo disparo y se activa
+			misilesPool[i] = new Misiles(nave->getPosition());
+			misilesPool[i]->activar();
+			break;
+		}
+	}
+
+}
+
+
 //si el disparo está activo, actualiza el movimiento
 void Jugador::gestionarDisparos(float deltaTime) {
 	for (int i = 0; i < maxDisparos; ++i) {
 		if (disparosPool[i]->estaActivo()) {
 			disparosPool[i]->actualizar(deltaTime);
+		}
+	}
+}
+
+void Jugador::gestionarMisiles(float deltaTime) {
+	for (int i = 0; i < maxMisiles; ++i) {
+		if (misilesPool[i]->estaActivo()) {
+			misilesPool[i]->actualizar(deltaTime);
 		}
 	}
 }
@@ -104,3 +136,11 @@ void Jugador::dibujarDisparos(RenderWindow* ventana1) {
 	}
 }
 
+void Jugador::dibujarMisiles(RenderWindow* ventana1) {
+
+	for (int i = 0; i < maxMisiles; ++i) {
+		if (misilesPool[i]->estaActivo()) {
+			misilesPool[i]->Dibujar(ventana1); misilesPool;
+		}
+	}
+}

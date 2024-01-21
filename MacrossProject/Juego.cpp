@@ -175,9 +175,10 @@ void Juego::procesar_eventos() {
 		case Event::KeyPressed:
 		// Presionar SPACE para disparar
 		if (evento1.key.code == Keyboard::Key::Space) {
-			jugador->disparar();
-			
-			
+			jugador->disparar();			
+		}
+		else if (evento1.key.code == Keyboard::Key::M) {
+			jugador->lanzarMisiles();
 		}
 		break;
 }
@@ -216,6 +217,9 @@ void Juego::actualizar() {
 	// actualizar los disparos
 	jugador->gestionarDisparos(deltaTime);
 
+	// actualizar los disparos
+	jugador->gestionarMisiles(deltaTime);
+
 	
 
 	//detectar las colisiones	
@@ -248,6 +252,9 @@ void Juego::dibujar() {
 
 	//dibujar disparos
 	jugador->dibujarDisparos(ventana1);
+
+	//dibujar misiles
+	jugador->dibujarMisiles(ventana1);
 
 	
 	//dibujar los puntaje y las vidas

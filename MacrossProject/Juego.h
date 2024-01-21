@@ -6,6 +6,7 @@
 #include "Enemigos.h"
 #include "Disparo.h"
 #include "Boss.h"
+#include "Misiles.h"
 
 
 using namespace std;
