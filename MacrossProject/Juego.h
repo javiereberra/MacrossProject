@@ -76,6 +76,7 @@ private:
 
 	Vector2f posiciones[10];
 
+	//variables para automatizar los disparos y misiles del boss
 	float ultimoDisparo;
 	const float intervaloDisparo = 10.0f;
 

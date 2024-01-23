@@ -45,7 +45,7 @@ void Misiles::actualizar(float deltaTime) {
     }
 }
 
-//actualizar la posición del disparo
+//actualizar la posición de los misiles del boss
 void Misiles::actualizarBoss(float deltaTime) {
     if (activo) {
 

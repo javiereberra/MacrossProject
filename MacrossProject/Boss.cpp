@@ -59,12 +59,12 @@ void Boss::Actualizar(float deltaTime) {
 	}
 
 	if (position.y < 120) {
-		velocidadY = -velocidadY;  // Invertir la dirección en el eje y
+		velocidadY = -velocidadY;  
 		
 	}
 
 	if (position.y >= 480) {
-		velocidadY = -velocidadY;  // Invertir la dirección en el eje y
+		velocidadY = -velocidadY;  
 		
 	}
 	
@@ -93,7 +93,7 @@ void Boss::disparar() {
 		if (!disparosPool[i]->estaActivo()) {
 			disparosPool[i]->desactivar();
 			delete disparosPool[i];
-			//se crea un nuevo disparo y se activa
+			//se crea un nuevo disparo y se activa en la posicion del cañon
 			disparosPool[i] = new Disparo(posicionCanon);
 			disparosPool[i]->activar();
 			break;
@@ -105,7 +105,7 @@ void Boss::disparar() {
 //método para disparar misiles
 void Boss::lanzarMisiles() {
 
-	//obtener la posición del cañon laser del boss
+	//obtener la posición del brazo lanzamisiles del boss
 	Vector2f bossOrigen = bossSprite->getPosition();
 	Vector2f posicionBrazo = Vector2f(bossOrigen.x - 45, bossOrigen.y + 7);
 
@@ -114,9 +114,10 @@ void Boss::lanzarMisiles() {
 		if (!misilesPool[i]->estaActivo()) {
 			misilesPool[i]->desactivar();
 			delete misilesPool[i];
-			//se crea un nuevo disparo y se activa
+			//se crea un nuevo disparo y se activa en la posicion del brazo
 			misilesPool[i] = new Misiles(posicionBrazo);
 			misilesPool[i]->activar();
+			//aquí se voltea el sprite para que el misil vaya en otra direccion
 			misilesPool[i]->voltear();
 			break;
 		}
@@ -132,7 +133,7 @@ void Boss::gestionarDisparos(float deltaTime) {
 		}
 	}
 }
-
+//lo mismo con los misiles
 void Boss::gestionarMisiles(float deltaTime) {
 	for (int i = 0; i < maxMisiles; ++i) {
 		if (misilesPool[i]->estaActivo()) {
@@ -140,7 +141,7 @@ void Boss::gestionarMisiles(float deltaTime) {
 		}
 	}
 }
-
+//metodos para dibujar disparos laser y misiles
 void Boss::dibujarDisparos(RenderWindow* ventana1) {
 
 	for (int i = 0; i < maxDisparos; ++i) {

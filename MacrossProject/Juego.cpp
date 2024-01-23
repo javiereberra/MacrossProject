@@ -112,6 +112,8 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	
 	posAleatoria = 0;
 
+
+	//setear el contador del último disparo en 0
 	ultimoDisparo = 0.0f;
 	ultimoMisil = 0.0f;
 
@@ -217,37 +219,41 @@ void Juego::actualizar() {
 	}
 
 
-	// actualizar los disparos
+	// actualizar los disparos del jugador
 	jugador->gestionarDisparos(deltaTime);
 
-	// actualizar los disparos
+	// actualizar los misiles del jugador
 	jugador->gestionarMisiles(deltaTime);
 
+	//DISPARO AUTOMATICO DEL BOSS
+	//iniciar el contador para del último disparo
 	ultimoDisparo += deltaTime;
-
 	if (boss->estaActivo()) {
-		// Verificar el intervalo de tiempo desde el último disparo del boss
+		// cuando el contador supera el intervalo se activa
 		if (ultimoDisparo >= intervaloDisparo) {
-			// Disparar automáticamente
+			// Dispara
 			boss->disparar();
-			// Reiniciar el contador de tiempo
+			// Reiniciar el contador
 			ultimoDisparo = 0.0f;
 		}
 	}
 	// actualizar los disparos
 	boss->gestionarDisparos(deltaTime);
 	
+
+	//MISILES AUTOMATICOS DEL BOSS
+	//iniciar el contador para del último misil
 	ultimoMisil += deltaTime;
 	if (boss->estaActivo()) {
-		// Verificar el intervalo de tiempo desde el último disparo del boss
+		//cuando el contador supera el intervalo se activa
 		if (ultimoMisil >= intervaloMisiles) {
-			// Disparar automáticamente
+			// Dispara
 			boss->lanzarMisiles();
 			// Reiniciar el contador de tiempo
 			ultimoMisil = 0.0f;
 		}
 	}
-
+	//alctualizar el movimiento
 	boss->gestionarMisiles(deltaTime);
 
 
@@ -279,15 +285,14 @@ void Juego::dibujar() {
 		boss->Dibujar(ventana1);
 	}
 
-	//dibujar disparos
+	//dibujar disparos del jugador
 	jugador->dibujarDisparos(ventana1);
-
-	//dibujar misiles
+	//dibujar misiles del jugador
 	jugador->dibujarMisiles(ventana1);
 
-	//dibujar disparos
+	//dibujar disparos de boss
 	boss->dibujarDisparos(ventana1);
-	//dibujar misiles
+	//dibujar misiles de boss
 	boss->dibujarMisiles(ventana1);
 	
 	//dibujar los puntaje y las vidas
@@ -299,7 +304,6 @@ void Juego::dibujar() {
 	if (explosionActiva) {
 		ventana1->draw(*explSprite);
 	}
-
 	ventana1->display();
 
 

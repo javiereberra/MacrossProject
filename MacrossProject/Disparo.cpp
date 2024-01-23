@@ -37,7 +37,7 @@ void Disparo::actualizar(float deltaTime) {
     }
 }
 
-//actualizar la posición del disparo
+//actualizar la posición del disparo laser del boss
 void Disparo::actualizarBoss(float deltaTime) {
     if (activo) {
         sprite->move(-velocidad * deltaTime);
