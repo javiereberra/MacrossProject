@@ -45,6 +45,22 @@ void Misiles::actualizar(float deltaTime) {
     }
 }
 
+//actualizar la posición del disparo
+void Misiles::actualizarBoss(float deltaTime) {
+    if (activo) {
+
+        velocidad.x += aceleracion * deltaTime;
+
+
+        sprite->move(-velocidad * deltaTime);
+
+        //condición para desactivar cuando sale de la pantalla
+        Vector2f posicion = sprite->getPosition();
+        if (posicion.x < 0) {
+            desactivar();
+        }
+    }
+}
 //dibujar en ventana
 void Misiles::Dibujar(RenderWindow* ventana1) {
 

@@ -26,6 +26,8 @@ public:
 
     //actualizar movimiento
     void actualizar(float deltaTime);
+    //actualizar movimiento boss
+    void actualizarBoss(float deltaTime);
     //dibujar en ventana
     void Dibujar(RenderWindow* ventana1);
     //activar y desactivar disparo
@@ -34,6 +36,11 @@ public:
 
     //obtener el rectángulo del sprite
     FloatRect bounds() const;
+
+    //voltear sprite para el uso del Boss
+    void voltear() {
+        sprite->setScale(-2.0f, 2.0f);
+    }
 
     //para devolver el estado activo a otras clases
     bool estaActivo() const {

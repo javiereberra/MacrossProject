@@ -3,6 +3,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include "Disparo.h"
+#include "Misiles.h"
 
 using namespace sf;
 
@@ -24,6 +25,10 @@ private:
 	//generar un pool de disparos
 	static const int maxDisparos = 5;
 	Disparo* disparosPool[maxDisparos];
+
+	//generar un pool de misiles
+	static const int maxMisiles = 2;
+	Misiles* misilesPool[maxMisiles];
 
 public:
 	//constructor
@@ -71,6 +76,13 @@ public:
 	//método para dibujar disparos
 	void dibujarDisparos(RenderWindow* deltaTime);
 
+	//método para disparar
+	void lanzarMisiles();
+	//método para gestionar los disparos
+	void gestionarMisiles(float deltaTime);
+	//método para dibujar disparos
+	void dibujarMisiles(RenderWindow* deltaTime);
+
 
 
 	//metodo para obtener el arreglo de disparos en Juego
@@ -80,5 +92,14 @@ public:
 	//metodo para obtener el max de disparos en Juego
 	int getMaxDisparos() const {
 		return maxDisparos;
+	}
+
+	//metodo para obtener el arreglo de disparos en Juego
+	Misiles** getMisilesPool() {
+		return misilesPool;
+	}
+	//metodo para obtener el max de disparos en Juego
+	int getMaxMisiles() const {
+		return maxMisiles;
 	}
 }; 

@@ -79,6 +79,9 @@ private:
 	float ultimoDisparo;
 	const float intervaloDisparo = 10.0f;
 
+	float ultimoMisil;
+	const float intervaloMisiles = 30.0f;
+
 	
 
 public:

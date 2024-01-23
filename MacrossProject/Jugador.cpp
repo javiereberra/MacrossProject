@@ -103,6 +103,8 @@ void Jugador::lanzarMisiles() {
 			//se crea un nuevo disparo y se activa
 			misilesPool[i] = new Misiles(nave->getPosition());
 			misilesPool[i]->activar();
+			
+			
 			break;
 		}
 	}

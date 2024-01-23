@@ -29,6 +29,12 @@ Boss::Boss()
 	for (int i = 0; i < maxDisparos; ++i) {
 		disparosPool[i] = new Disparo(Vector2f(0.0f, 0.0f));
 	}
+
+	//inicializar el pool de misiles
+	for (int i = 0; i < maxMisiles; ++i) {
+		misilesPool[i] = new Misiles(Vector2f(0.0f, 0.0f));
+	}
+
 }
 
 //para dibujar el sprite en la clase Juego
@@ -80,7 +86,7 @@ void Boss::disparar() {
 
 	//obtener la posición del cañon laser del boss
 	Vector2f bossOrigen = bossSprite->getPosition();
-	Vector2f PosicionCanon = sf::Vector2f(bossOrigen.x - 62, bossOrigen.y - 55);
+	Vector2f posicionCanon = Vector2f(bossOrigen.x - 62, bossOrigen.y - 55);
 
 	for (int i = 0; i < maxDisparos; ++i) {
 		//si el disparo no está activo, se desactiva y se elimina para liberar memoria
@@ -88,8 +94,30 @@ void Boss::disparar() {
 			disparosPool[i]->desactivar();
 			delete disparosPool[i];
 			//se crea un nuevo disparo y se activa
-			disparosPool[i] = new Disparo(PosicionCanon);
+			disparosPool[i] = new Disparo(posicionCanon);
 			disparosPool[i]->activar();
+			break;
+		}
+	}
+
+}
+
+//método para disparar misiles
+void Boss::lanzarMisiles() {
+
+	//obtener la posición del cañon laser del boss
+	Vector2f bossOrigen = bossSprite->getPosition();
+	Vector2f posicionBrazo = Vector2f(bossOrigen.x - 45, bossOrigen.y + 7);
+
+	for (int i = 0; i < maxMisiles; ++i) {
+		//si el disparo no está activo, se desactiva y se elimina para liberar memoria
+		if (!misilesPool[i]->estaActivo()) {
+			misilesPool[i]->desactivar();
+			delete misilesPool[i];
+			//se crea un nuevo disparo y se activa
+			misilesPool[i] = new Misiles(posicionBrazo);
+			misilesPool[i]->activar();
+			misilesPool[i]->voltear();
 			break;
 		}
 	}
@@ -105,11 +133,28 @@ void Boss::gestionarDisparos(float deltaTime) {
 	}
 }
 
+void Boss::gestionarMisiles(float deltaTime) {
+	for (int i = 0; i < maxMisiles; ++i) {
+		if (misilesPool[i]->estaActivo()) {
+			misilesPool[i]->actualizarBoss(deltaTime);
+		}
+	}
+}
+
 void Boss::dibujarDisparos(RenderWindow* ventana1) {
 
 	for (int i = 0; i < maxDisparos; ++i) {
 		if (disparosPool[i]->estaActivo()) {
 			disparosPool[i]->Dibujar(ventana1); disparosPool;
+		}
+	}
+}
+
+void Boss::dibujarMisiles(RenderWindow* ventana1) {
+
+	for (int i = 0; i < maxMisiles; ++i) {
+		if (misilesPool[i]->estaActivo()) {
+			misilesPool[i]->Dibujar(ventana1); misilesPool;
 		}
 	}
 }
