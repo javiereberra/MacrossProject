@@ -24,6 +24,11 @@ Boss::Boss()
 
 	activo = false;
 	vida = 10;
+
+	//inicializar el pool de disparos
+	for (int i = 0; i < maxDisparos; ++i) {
+		disparosPool[i] = new Disparo(Vector2f(0.0f, 0.0f));
+	}
 }
 
 //para dibujar el sprite en la clase Juego
@@ -69,6 +74,44 @@ bool Boss::Colision(const FloatRect& rect) {
 	return bounds.intersects(rect);
 
 
+}
+//método para disparar
+void Boss::disparar() {
+
+	//obtener la posición del cañon laser del boss
+	Vector2f bossOrigen = bossSprite->getPosition();
+	Vector2f PosicionCanon = sf::Vector2f(bossOrigen.x - 62, bossOrigen.y - 55);
+
+	for (int i = 0; i < maxDisparos; ++i) {
+		//si el disparo no está activo, se desactiva y se elimina para liberar memoria
+		if (!disparosPool[i]->estaActivo()) {
+			disparosPool[i]->desactivar();
+			delete disparosPool[i];
+			//se crea un nuevo disparo y se activa
+			disparosPool[i] = new Disparo(PosicionCanon);
+			disparosPool[i]->activar();
+			break;
+		}
+	}
+
+}
+
+//si el disparo está activo, actualiza el movimiento
+void Boss::gestionarDisparos(float deltaTime) {
+	for (int i = 0; i < maxDisparos; ++i) {
+		if (disparosPool[i]->estaActivo()) {
+			disparosPool[i]->actualizarBoss(deltaTime);
+		}
+	}
+}
+
+void Boss::dibujarDisparos(RenderWindow* ventana1) {
+
+	for (int i = 0; i < maxDisparos; ++i) {
+		if (disparosPool[i]->estaActivo()) {
+			disparosPool[i]->Dibujar(ventana1); disparosPool;
+		}
+	}
 }
 
 //método para eliminar los enemigos en pantalla y dejen de ser dibujados

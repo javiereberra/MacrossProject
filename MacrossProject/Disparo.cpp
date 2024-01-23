@@ -24,8 +24,6 @@ Disparo::Disparo(const Vector2f posicionInicial) {
 }
 
 
-
-
 //actualizar la posición del disparo
 void Disparo::actualizar(float deltaTime) {
     if (activo) {
@@ -34,6 +32,19 @@ void Disparo::actualizar(float deltaTime) {
         //condición para desactivar cuando sale de la pantalla
         Vector2f posicion = sprite->getPosition();
         if (posicion.x > 800) {
+            desactivar();
+        }
+    }
+}
+
+//actualizar la posición del disparo
+void Disparo::actualizarBoss(float deltaTime) {
+    if (activo) {
+        sprite->move(-velocidad * deltaTime);
+
+        //condición para desactivar cuando sale de la pantalla
+        Vector2f posicion = sprite->getPosition();
+        if (posicion.x < 0) {
             desactivar();
         }
     }

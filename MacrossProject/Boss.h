@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include "Disparo.h"
 
 using namespace sf;
 
@@ -19,6 +20,10 @@ private:
 	//booleano para determinar si el enemigo está elimnado y deba dibujarse o no
 	bool activo;
 	int vida;
+
+	//generar un pool de disparos
+	static const int maxDisparos = 5;
+	Disparo* disparosPool[maxDisparos];
 
 public:
 	//constructor
@@ -59,4 +64,21 @@ public:
 	}
 
 
+	//método para disparar
+	void disparar();
+	//método para gestionar los disparos
+	void gestionarDisparos(float deltaTime);
+	//método para dibujar disparos
+	void dibujarDisparos(RenderWindow* deltaTime);
+
+
+
+	//metodo para obtener el arreglo de disparos en Juego
+	Disparo** getDisparosPool() {
+		return disparosPool;
+	}
+	//metodo para obtener el max de disparos en Juego
+	int getMaxDisparos() const {
+		return maxDisparos;
+	}
 }; 

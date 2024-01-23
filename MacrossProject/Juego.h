@@ -76,6 +76,9 @@ private:
 
 	Vector2f posiciones[10];
 
+	float ultimoDisparo;
+	const float intervaloDisparo = 10.0f;
+
 	
 
 public:

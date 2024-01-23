@@ -112,6 +112,8 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	
 	posAleatoria = 0;
 
+	ultimoDisparo = 0.0f;
+
 	
 }
 
@@ -220,6 +222,19 @@ void Juego::actualizar() {
 	// actualizar los disparos
 	jugador->gestionarMisiles(deltaTime);
 
+	ultimoDisparo += deltaTime;
+
+	if (boss->estaActivo()) {
+		// Verificar el intervalo de tiempo desde el último disparo del boss
+		if (ultimoDisparo >= intervaloDisparo) {
+			// Disparar automáticamente
+			boss->disparar();
+			// Reiniciar el contador de tiempo
+			ultimoDisparo = 0.0f;
+		}
+	}
+	// actualizar los disparos
+	boss->gestionarDisparos(deltaTime);
 	
 
 	//detectar las colisiones	
@@ -256,6 +271,8 @@ void Juego::dibujar() {
 	//dibujar misiles
 	jugador->dibujarMisiles(ventana1);
 
+	//dibujar disparos
+	boss->dibujarDisparos(ventana1);
 	
 	//dibujar los puntaje y las vidas
 	ventana1->draw(*puntajeText);

@@ -23,8 +23,11 @@ public:
      //destructor de disparo
     ~Disparo();
 
-    //actualizar movimiento
+    //actualizar movimiento jugador
     void actualizar(float deltaTime);
+    //actualizar movimiento boss
+    void actualizarBoss(float deltaTime);
+
     //dibujar en ventana
     void Dibujar(RenderWindow* ventana1);
     //activar y desactivar disparo
