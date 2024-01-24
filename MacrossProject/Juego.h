@@ -83,6 +83,8 @@ private:
 	float ultimoMisil;
 	const float intervaloMisiles = 30.0f;
 
+	bool jugando;
+
 	
 
 public:
@@ -112,7 +114,8 @@ public:
 	//un metodo para aumentar la dificultard
 	void dificultad();
 	
-
+	void reiniciar();
+	void gameOver();
 
 	//destructor de juego
 	~Juego();

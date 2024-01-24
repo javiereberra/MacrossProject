@@ -117,7 +117,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	ultimoDisparo = 0.0f;
 	ultimoMisil = 0.0f;
 
-	
+	jugando = false;
 }
 
 //metodo para iniciar un menu simple antes de iniciar el juego
@@ -133,25 +133,31 @@ void Juego::ejecutar() {
 				if (evento.key.code == Keyboard::Key::S && !start) {
 
 					start = true;
-
-
+					jugando = true;
+				}
+				else if (evento.key.code == Keyboard::Key::R && !jugando) {
+					reiniciar();
 				}
 			}
 		}
 
 		ventana1->clear(Color::Black);
 
-		if (start) {
+		if (jugando) {
 			//iniciar el loop si start es true
 			gameLoop();
 
 		}
 		else {
-			//Menu de fondo si start es false
-			ventana1->draw(*fondoMenu);
-			ventana1->draw(*menu);
-			
-			
+			if (start){
+				gameOver();
+		}
+			else {
+				//Menu de fondo si start es false
+				ventana1->draw(*fondoMenu);
+				ventana1->draw(*menu);
+
+			}
 		}
 
 		ventana1->display();
@@ -161,7 +167,7 @@ void Juego::ejecutar() {
 //el loop del juego iniciado, procesando eventos, actualizando moviemientos y dibujando todo
 void Juego::gameLoop() {
 	
-	while (ventana1->isOpen() && start) {
+	while (ventana1->isOpen() && jugando) {
 
 		procesar_eventos();
 		actualizar();
@@ -263,6 +269,9 @@ void Juego::actualizar() {
 	//metodo para dificultad
 	dificultad();
 
+	if (vidas <= 0) {
+		jugando = false;
+	}
 }
 
 //dibujar fondo, jugador
@@ -666,4 +675,19 @@ void Juego::dificultad() {
 	}
 
 
+}
+
+void Juego::reiniciar() {
+
+	jugando = true;
+	start = true;
+
+
+}
+
+void Juego::gameOver() {
+	ventana1->draw(*fondoMenu);
+	ventana1->draw(*puntajeText);
+	
+	jugando = false;
 }
