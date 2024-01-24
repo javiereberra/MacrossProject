@@ -39,6 +39,8 @@ private:
 	Font* fuente;
 	//texto para el menu de inicio
 	Text* menu;
+	Text* finDelJuego;
+	Text* restart;
 
 	//variable de jugador
 	Jugador* jugador;
@@ -114,6 +116,7 @@ public:
 	//un metodo para aumentar la dificultard
 	void dificultad();
 	
+	//metodos para el gameover y reiniciar el juego
 	void reiniciar();
 	void gameOver();
 

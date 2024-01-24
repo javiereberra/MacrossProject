@@ -50,6 +50,21 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	menu->setCharacterSize(15);
 	menu->setPosition(290, 450);
 
+	//texto para gameover
+	finDelJuego = new Text;
+	finDelJuego->setFont(*fuente);
+	finDelJuego->setString("FINAL DEL JUEGO, TU PUNTUACIÓN ES:" + to_string(ptos));
+	finDelJuego->setCharacterSize(15);
+	finDelJuego->setPosition(260, 400);
+
+	//texto para gameover
+	restart = new Text;
+	restart->setFont(*fuente);
+	restart->setString("PRESIONA 'R' PARA EL MENU INICIAL");
+	restart->setCharacterSize(15);
+	restart->setPosition(270, 450);
+
+
 	//jugador
 	jugador = new Jugador();
 
@@ -129,15 +144,14 @@ void Juego::ejecutar() {
 			if (evento.type == Event::Closed)
 				ventana1->close();
 			//Presionar "s" para iniciar el gameloop
-			if (evento.type == Event::KeyPressed) {
+			else if (evento.type == Event::KeyPressed) {
 				if (evento.key.code == Keyboard::Key::S && !start) {
 
 					start = true;
 					jugando = true;
 				}
-				else if (evento.key.code == Keyboard::Key::R && !jugando) {
-					reiniciar();
-				}
+				
+				
 			}
 		}
 
@@ -271,6 +285,7 @@ void Juego::actualizar() {
 
 	if (vidas <= 0) {
 		jugando = false;
+		
 	}
 }
 
@@ -679,15 +694,64 @@ void Juego::dificultad() {
 
 void Juego::reiniciar() {
 
-	jugando = true;
-	start = true;
+	cout << "Reiniciando el juego" << endl;
+
+	for (int i = 0; i < 5; ++i) {
+		enemigos[i]->activar();
+	}
+
+	enemigos[0] = new Enemigos();
+	enemigos[0]->position = posiciones[0];
+	enemigos[1] = new Enemigos();
+	enemigos[1]->position = posiciones[2];
+	enemigos[2] = new Enemigos();
+	enemigos[2]->position = posiciones[4];
+	enemigos[3] = new Enemigos();
+	enemigos[3]->position = posiciones[6];
+	enemigos[4] = new Enemigos();
+	enemigos[4]->position = posiciones[8];
+
+	// Restablecer vida y puntaje
+	vidas = 3;
+	ptos = 0;
+	puntajeText->setString("SCORE: " + to_string(ptos));
+	vidasText->setString(to_string(vidas));
+	fondo->setPosition(0, 0);
+
+	if (boss->estaActivo()) {
+		boss->desactivar();
+	}	
+
+	jugando = false;
+	start = false;
 
 
 }
 
 void Juego::gameOver() {
 	ventana1->draw(*fondoMenu);
-	ventana1->draw(*puntajeText);
-	
-	jugando = false;
+	finDelJuego->setString("FINAL DEL JUEGO, TU PUNTUACIÓN ES:" + to_string(ptos));
+	ventana1->draw(*finDelJuego);
+	ventana1->draw(*restart);
+	ventana1->display();  // Mostrar los elementos renderizados
+
+	bool reiniciarPresionado = false;
+
+	while (ventana1->isOpen() && !reiniciarPresionado) {
+		Event evento;
+		if (ventana1->pollEvent(evento)) {
+			if (evento.type == Event::Closed) {
+				ventana1->close();
+			}
+			else if (evento.type == Event::KeyPressed) {
+				if (evento.key.code == Keyboard::Key::R) {
+					reiniciarPresionado = true;
+				}
+			}
+		}
+	}
+
+	if (reiniciarPresionado) {
+		reiniciar();
+	}
 }
