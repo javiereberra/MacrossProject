@@ -105,6 +105,9 @@ public:
 	void colisiones_misiles_enemigos();
 	void colisiones_disparos_boss();
 	void colisiones_misiles_boss();
+	void colisiones_jugador_boss();
+	void colisiones_jugador_disparos();
+	void colisiones_jugador_misiles();
 
 	//un metodo para aumentar la dificultard
 	void dificultad();

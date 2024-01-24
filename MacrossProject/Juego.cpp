@@ -317,6 +317,9 @@ void Juego::detectar_colisiones() {
 	colisiones_misiles_enemigos();
 	colisiones_disparos_boss();
 	colisiones_misiles_boss();
+	colisiones_jugador_boss();
+	colisiones_jugador_disparos();
+	colisiones_jugador_misiles();
 
 
 }
@@ -370,6 +373,99 @@ void Juego::colisiones_jugador_enemigos() {
 	}
 }
 
+void Juego::colisiones_jugador_boss() {
+	//sprite para obtener el sprite de jugador
+	Sprite* spriteNave = jugador->getSpriteNaveJugador();
+
+
+
+	//obtener el rectangulo del sprite de jugador
+	if (spriteNave) {
+		FloatRect jugadorRect = spriteNave->getGlobalBounds();
+
+		//si el boss está activo, obtener el sprite y obtener el rectángulo
+		if (boss->estaActivo()) {
+			Sprite* spriteBoss = boss->getSpriteBoss();
+			FloatRect bossRect = spriteBoss->getGlobalBounds();
+			//comprobar la colisión entre ambos rectángulos
+			if (jugadorRect.intersects(bossRect)) {
+				//restar vida y generar explosión
+				vidas -= 1;
+				vidasText->setString(to_string(vidas));
+				posicionExplosion = spriteNave->getPosition();
+				explSprite->setPosition(posicionExplosion);
+				explosionActiva = true;
+			}
+
+
+		}
+		
+		}
+	
+}
+void Juego::colisiones_jugador_disparos() {
+	//sprite para obtener el sprite de jugador
+	Sprite* spriteNave = jugador->getSpriteNaveJugador();
+	//obtener el rectangulo del sprite de jugador
+	if (spriteNave) {
+		FloatRect jugadorRect = spriteNave->getGlobalBounds();
+		for (int i = 0; i < boss->getMaxDisparos(); ++i) {
+			if (boss->getDisparosPool()[i]->estaActivo()) {
+				// Obtener el rectángulo de cada disparo
+				FloatRect disparoRect = boss->getDisparosPool()[i]->bounds();
+				if (jugadorRect.intersects(disparoRect)) {
+					// Desactivar el disparo
+					boss->getDisparosPool()[i]->desactivar();
+					vidas -= 1;
+					vidasText->setString(to_string(vidas));
+					// Ajustar la posición de la explosión a la posición del enemigo colisionado
+					posicionExplosion = spriteNave->getPosition();
+					explSprite->setPosition(posicionExplosion);
+
+					// Activar la explosión
+					explosionActiva = true;
+
+
+
+				}
+			}
+		}
+	}
+}
+
+void Juego::colisiones_jugador_misiles() {
+	//sprite para obtener el sprite de jugador
+	Sprite* spriteNave = jugador->getSpriteNaveJugador();
+	//obtener el rectangulo del sprite de jugador
+	if (spriteNave) {
+		FloatRect jugadorRect = spriteNave->getGlobalBounds();
+		for (int i = 0; i < boss->getMaxMisiles(); ++i) {
+			if (boss->getMisilesPool()[i]->estaActivo()) {
+				// Obtener el rectángulo de cada misil
+				FloatRect misilesRect = boss->getMisilesPool()[i]->bounds();
+				if (jugadorRect.intersects(misilesRect)) {
+					// Desactivar el misil
+					boss->getMisilesPool()[i]->desactivar();
+					vidas -= 3;
+					vidasText->setString(to_string(vidas));
+					// Ajustar la posición de la explosión a la posición del enemigo colisionado
+					posicionExplosion = spriteNave->getPosition();
+					explSprite->setPosition(posicionExplosion);
+
+					// Activar la explosión
+					explosionActiva = true;
+
+
+
+				}
+			}
+		}
+	}
+}
+
+
+
+
 void Juego::colisiones_disparos_enemigos() {
 	
 	//Comprobar con los enemigos que estén activos
@@ -379,7 +475,7 @@ void Juego::colisiones_disparos_enemigos() {
 			Sprite* spriteEnemigo = enemigos[i]->getSpriteNaveEnemiga();
 			// obtener el rectángulo de cada sprite
 			FloatRect enemigoRect = spriteEnemigo->getGlobalBounds();
-			//comprobar las colisiones de los disparos con los enemigos
+			//obtener los disparos activos
 			for (int j = 0; j < jugador->getMaxDisparos(); ++j) {
 				if (jugador->getDisparosPool()[j]->estaActivo()) {
 					// Obtener el rectángulo de cada disparo
