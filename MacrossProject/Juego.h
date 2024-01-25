@@ -42,6 +42,15 @@ private:
 	Text* finDelJuego;
 	Text* restart;
 
+	//Textura y sprite de game Over
+	Texture* textura4;
+	Sprite* fondoGameOver;
+
+	//Texturas y sprite de animacion de la explosion
+	Texture* explosionFrames[3];
+	Sprite explosionAnimation;
+
+
 	//variable de jugador
 	Jugador* jugador;
 	
@@ -85,6 +94,9 @@ private:
 	float ultimoMisil;
 	const float intervaloMisiles = 30.0f;
 
+	float explosionTime;
+	float explosionFrameDuration;
+
 	bool jugando;
 
 	
@@ -119,6 +131,8 @@ public:
 	//metodos para el gameover y reiniciar el juego
 	void reiniciar();
 	void gameOver();
+
+	void explosionAnimada();
 
 	//destructor de juego
 	~Juego();

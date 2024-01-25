@@ -50,6 +50,20 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	menu->setCharacterSize(15);
 	menu->setPosition(290, 450);
 
+	//texturas y sprite de menu fin del juego
+	textura4 = new Texture;
+	fondoGameOver = new Sprite;
+	textura4->loadFromFile("assets/gameover.jpg");
+	fondoGameOver->setTexture(*textura4);
+	
+	//cargar texturas de explosion
+	for (int i = 0; i < 3; ++i) {
+		explosionFrames[i] = new Texture;
+		explosionFrames[i]->loadFromFile("assets/explosion_frame_" + to_string(i) + ".png");
+	}
+	//cargar la textura inicial del sprite
+	explosionAnimation.setTexture(*explosionFrames[0]);
+
 	//texto para gameover
 	finDelJuego = new Text;
 	finDelJuego->setFont(*fuente);
@@ -131,6 +145,9 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	//setear el contador del último disparo en 0
 	ultimoDisparo = 0.0f;
 	ultimoMisil = 0.0f;
+
+	explosionTime = 0.0f;
+	explosionFrameDuration = 2.5f;
 
 	jugando = false;
 }
@@ -280,6 +297,15 @@ void Juego::actualizar() {
 	//detectar las colisiones	
 	detectar_colisiones();
 
+	//actualizar la animación de la explosion
+	explosionAnimada();
+
+
+	
+
+
+
+
 	//metodo para dificultad
 	dificultad();
 
@@ -326,7 +352,7 @@ void Juego::dibujar() {
 
 	//dibujar las explosiones en caso de haberlas
 	if (explosionActiva) {
-		ventana1->draw(*explSprite);
+		ventana1->draw(explosionAnimation);
 	}
 	ventana1->display();
 
@@ -376,7 +402,7 @@ void Juego::colisiones_jugador_enemigos() {
 
 					//ajustar la posición de la explosión a la posición del enemigo colisionado
 					posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
-					explSprite->setPosition(posicionExplosion);
+					explosionAnimation.setPosition(posicionExplosion);
 
 					//activar la explosión
 					explosionActiva = true;
@@ -417,7 +443,7 @@ void Juego::colisiones_jugador_boss() {
 				vidas -= 1;
 				vidasText->setString(to_string(vidas));
 				posicionExplosion = spriteNave->getPosition();
-				explSprite->setPosition(posicionExplosion);
+				explosionAnimation.setPosition(posicionExplosion);
 				explosionActiva = true;
 			}
 
@@ -444,7 +470,7 @@ void Juego::colisiones_jugador_disparos() {
 					vidasText->setString(to_string(vidas));
 					// Ajustar la posición de la explosión a la posición del enemigo colisionado
 					posicionExplosion = spriteNave->getPosition();
-					explSprite->setPosition(posicionExplosion);
+					explosionAnimation.setPosition(posicionExplosion);
 
 					// Activar la explosión
 					explosionActiva = true;
@@ -474,7 +500,7 @@ void Juego::colisiones_jugador_misiles() {
 					vidasText->setString(to_string(vidas));
 					// Ajustar la posición de la explosión a la posición del enemigo colisionado
 					posicionExplosion = spriteNave->getPosition();
-					explSprite->setPosition(posicionExplosion);
+					explosionAnimation.setPosition(posicionExplosion);
 
 					// Activar la explosión
 					explosionActiva = true;
@@ -512,7 +538,7 @@ void Juego::colisiones_disparos_enemigos() {
 
 						// Ajustar la posición de la explosión a la posición del enemigo colisionado
 						posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
-						explSprite->setPosition(posicionExplosion);
+						explosionAnimation.setPosition(posicionExplosion);
 
 						// Activar la explosión
 						explosionActiva = true;
@@ -557,7 +583,7 @@ void Juego::colisiones_misiles_enemigos() {
 
 						// Ajustar la posición de la explosión a la posición del enemigo colisionado
 						posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
-						explSprite->setPosition(posicionExplosion);
+						explosionAnimation.setPosition(posicionExplosion);
 
 						// Activar la explosión
 						explosionActiva = true;
@@ -596,7 +622,7 @@ void Juego::colisiones_disparos_boss() {
 
 						//posicion del impacto
 						posicionExplosion = boss->getSpriteBoss()->getPosition();
-						explSprite->setPosition(posicionExplosion);
+						explosionAnimation.setPosition(posicionExplosion);
 						explosionActiva = true;
 						//restar una vida a boss
 						int nuevaVida = boss->obtenerVida();
@@ -625,7 +651,7 @@ void Juego::colisiones_misiles_boss() {
 
 				//posicion del impacto
 				posicionExplosion = boss->getSpriteBoss()->getPosition();
-				explSprite->setPosition(posicionExplosion);
+				explosionAnimation.setPosition(posicionExplosion);
 				explosionActiva = true;
 				//restar una vida a boss
 				int nuevaVida = boss->obtenerVida();
@@ -649,7 +675,7 @@ void Juego::dificultad() {
 		for (int i = 0; i < 5; ++i) {
 			if (enemigos[i] && enemigos[i]->estaActivo()) {
 				// Establecer la nueva velocidadX
-				enemigos[i]->setVelocidadX(4.5f);
+				enemigos[i]->setVelocidadX(4.0f);
 			}
 		}
 
@@ -660,7 +686,7 @@ void Juego::dificultad() {
 		for (int i = 0; i < 5; ++i) {
 			if (enemigos[i] && enemigos[i]->estaActivo()) {
 				// Establecer la nueva velocidadX
-				enemigos[i]->setVelocidadX(6.0f);
+				enemigos[i]->setVelocidadX(5.0f);
 			}
 		}
 
@@ -671,7 +697,7 @@ void Juego::dificultad() {
 		for (int i = 0; i < 5; ++i) {
 			if (enemigos[i] && enemigos[i]->estaActivo()) {
 				// Establecer la nueva velocidadX
-				enemigos[i]->setVelocidadX(7.5f);
+				enemigos[i]->setVelocidadX(6.0f);
 			}
 		}
 
@@ -729,7 +755,7 @@ void Juego::reiniciar() {
 }
 
 void Juego::gameOver() {
-	ventana1->draw(*fondoMenu);
+	ventana1->draw(*fondoGameOver);
 	finDelJuego->setString("FINAL DEL JUEGO, TU PUNTUACIÓN ES:" + to_string(ptos));
 	ventana1->draw(*finDelJuego);
 	ventana1->draw(*restart);
@@ -753,5 +779,29 @@ void Juego::gameOver() {
 
 	if (reiniciarPresionado) {
 		reiniciar();
+	}
+}
+
+void Juego::explosionAnimada(){
+
+
+	//contador para la explosión
+
+//duracion del fram
+	
+
+	if (explosionActiva) { // Actualizar el tiempo de la explosión
+		explosionTime += deltaTime;
+
+		// el frame actual es igual a la division entre el contador y la duración de los frames
+		//pasado a un número entero
+		int currentFrame = static_cast<int>(explosionTime / explosionFrameDuration);
+		if (currentFrame < 3) {
+			explosionAnimation.setTexture(*explosionFrames[currentFrame]);
+		}
+		else {
+			explosionActiva = false;
+			explosionTime = 0.0f;
+		}
 	}
 }
