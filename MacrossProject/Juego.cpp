@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 #include "Juego.h"
 #include <iostream>
 
@@ -18,6 +19,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	textura1->loadFromFile("assets/fondo1.jpg");
 	fondo->setTexture(*textura1);
 	fondo->setScale(2.0f,2.0f);
+	
 	
 	//Textura y Sprite del fondo de inicio
 	textura2 = new Texture;
@@ -78,6 +80,28 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	restart->setCharacterSize(15);
 	restart->setPosition(270, 450);
 
+
+	//sonidos fx
+	disparoBff = new SoundBuffer;
+	disparoBff->loadFromFile("assets/shoot.wav");
+	disparoSnd = new Sound;
+	disparoSnd->setBuffer(*disparoBff);
+	disparoSnd->setVolume(25.0f);
+	
+	misileBff = new SoundBuffer;
+	misileBff->loadFromFile("assets/misile.wav");
+	misileSnd = new Sound;
+	misileSnd->setBuffer(*misileBff);
+	misileSnd->setVolume(25.0f);
+
+	
+	explosionBff = new SoundBuffer;
+	explosionBff->loadFromFile("assets/explosion.wav");
+	explosionSnd = new Sound;
+	explosionSnd->setBuffer(*explosionBff);
+	explosionSnd->setVolume(15.0f);
+
+	
 
 	//jugador
 	jugador = new Jugador();
@@ -217,10 +241,12 @@ void Juego::procesar_eventos() {
 		case Event::KeyPressed:
 		// Presionar SPACE para disparar
 		if (evento1.key.code == Keyboard::Key::Space) {
-			jugador->disparar();			
+			jugador->disparar();	
+			disparoSnd->play();
 		}
 		else if (evento1.key.code == Keyboard::Key::M) {
 			jugador->lanzarMisiles();
+			misileSnd->play();
 		}
 		break;
 }
@@ -270,6 +296,7 @@ void Juego::actualizar() {
 		if (ultimoDisparo >= intervaloDisparo) {
 			// Dispara
 			boss->disparar();
+			disparoSnd->play();
 			// Reiniciar el contador
 			ultimoDisparo = 0.0f;
 		}
@@ -286,9 +313,16 @@ void Juego::actualizar() {
 		if (ultimoMisil >= intervaloMisiles) {
 			// Dispara
 			boss->lanzarMisiles();
+			
+			misileSnd->play();
+
+			
+
 			// Reiniciar el contador de tiempo
 			ultimoMisil = 0.0f;
+			
 		}
+		
 	}
 	//alctualizar el movimiento
 	boss->gestionarMisiles(deltaTime);
@@ -353,6 +387,7 @@ void Juego::dibujar() {
 	//dibujar las explosiones en caso de haberlas
 	if (explosionActiva) {
 		ventana1->draw(explosionAnimation);
+		explosionSnd->play();
 	}
 	ventana1->display();
 

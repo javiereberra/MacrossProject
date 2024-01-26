@@ -27,7 +27,7 @@ private:
 	Disparo* disparosPool[maxDisparos];
 
 	//generar un pool de misiles
-	static const int maxMisiles = 2;
+	static const int maxMisiles = 1;
 	Misiles* misilesPool[maxMisiles];
 
 public:

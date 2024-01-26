@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 #include "Jugador.h"
 #include "Enemigos.h"
 #include "Disparo.h"
@@ -89,16 +90,27 @@ private:
 
 	//variables para automatizar los disparos y misiles del boss
 	float ultimoDisparo;
-	const float intervaloDisparo = 10.0f;
+	const float intervaloDisparo = 60.0f;
 
 	float ultimoMisil;
-	const float intervaloMisiles = 30.0f;
+	const float intervaloMisiles = 80.0f;
 
 	float explosionTime;
 	float explosionFrameDuration;
 
 	bool jugando;
 
+
+	//agregar sonido
+	SoundBuffer* disparoBff;
+	Sound* disparoSnd;
+
+	SoundBuffer* misileBff;
+	Sound* misileSnd;
+
+	SoundBuffer* explosionBff;
+	Sound* explosionSnd;
+	
 	
 
 public:
