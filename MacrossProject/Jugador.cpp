@@ -146,3 +146,9 @@ void Jugador::dibujarMisiles(RenderWindow* ventana1) {
 		}
 	}
 }
+
+void Jugador::setPosition(Vector2f nuevaPosicion) {
+
+	position = nuevaPosicion;
+	nave->setPosition(position);
+}

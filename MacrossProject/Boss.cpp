@@ -23,7 +23,7 @@ Boss::Boss()
 	velocidadY = 0.8f;
 
 	activo = false;
-	vida = 10;
+	vida = 30;
 
 	//inicializar el pool de disparos
 	for (int i = 0; i < maxDisparos; ++i) {

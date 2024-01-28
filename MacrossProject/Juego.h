@@ -36,6 +36,9 @@ private:
 	Font* fuente;
 	//texto para el menu de inicio
 	Text* menu;
+	Text* instrucc;
+	Text* instrucc2;
+	Text* instrucc3;
 	Text* finDelJuego;
 	Text* restart;
 

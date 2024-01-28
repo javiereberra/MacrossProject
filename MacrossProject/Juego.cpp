@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+ï»¿#include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
@@ -27,7 +27,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	textura2->loadFromFile("assets/menu.jpg");
 	fondoMenu->setTexture(*textura2);
 
-	//Textura y Sprite del ícono para marcador de vidas
+	//Textura y Sprite del Ã­cono para marcador de vidas
 	textura3 = new Texture;
 	vidasSprite = new Sprite;
 	textura3->loadFromFile("assets/macross1.png");
@@ -39,13 +39,32 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	//fuente
 	fuente = new Font;
 
-	//texto para el menú de inicio
+	//texto para el menÃº de inicio
 	menu = new Text;
 	fuente->loadFromFile("assets/arial.ttf");
 	menu->setFont(*fuente);
 	menu->setString("PRESIONA 'S' PARA COMENZAR");
 	menu->setCharacterSize(15);
-	menu->setPosition(290, 450);
+	menu->setPosition(290, 400);
+
+	instrucc = new Text;
+	instrucc->setFont(*fuente);
+	instrucc->setString("PRESIONA ARRIBA ABAJO IZQUIERDA DERECHA PARA MOVERTE");
+	instrucc->setCharacterSize(15);
+	instrucc->setPosition(180, 430);
+
+	instrucc2 = new Text;
+	instrucc2->setFont(*fuente);
+	instrucc2->setString("PRESIONA SPACE PARA DISPARA Y CONTROL PARA MISIL");
+	instrucc2->setCharacterSize(15);
+	instrucc2->setPosition(200, 460);
+
+	instrucc3 = new Text;
+	instrucc3->setFont(*fuente);
+	instrucc3->setString("DERROTA AL BOSS PARA GANAR");
+	instrucc3->setCharacterSize(15);
+	instrucc3->setPosition(290, 490);
+
 
 	//texturas y sprite de menu fin del juego
 	textura4 = new Texture;
@@ -64,7 +83,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	//texto para gameover
 	finDelJuego = new Text;
 	finDelJuego->setFont(*fuente);
-	finDelJuego->setString("FINAL DEL JUEGO, TU PUNTUACIÓN ES:" + to_string(ptos));
+	finDelJuego->setString("FINAL DEL JUEGO, TU PUNTUACIÃ“N ES:" + to_string(ptos));
 	finDelJuego->setCharacterSize(15);
 	finDelJuego->setPosition(260, 400);
 
@@ -128,10 +147,10 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	enemigos[4] = new Enemigos();
 	enemigos[4]->position = posiciones[8];
 
-	//velocidad para la animación del fondo
+	//velocidad para la animaciÃ³n del fondo
 	fondoSpeed = 2.0f;
 
-	//para que siempre inicie el menú
+	//para que siempre inicie el menÃº
 	start = false;
 
 	//establecer los 60fps por segundo
@@ -161,7 +180,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	posAleatoria = 0;
 
 
-	//setear el contador del último disparo en 0
+	//setear el contador del Ãºltimo disparo en 0
 	ultimoDisparo = 0.0f;
 	ultimoMisil = 0.0f;
 
@@ -206,6 +225,9 @@ void Juego::ejecutar() {
 				//Menu de fondo si start es false
 				ventana1->draw(*fondoMenu);
 				ventana1->draw(*menu);
+				ventana1->draw(*instrucc);
+				ventana1->draw(*instrucc2);
+				ventana1->draw(*instrucc3);
 
 			}
 		}
@@ -240,7 +262,7 @@ void Juego::procesar_eventos() {
 			disparoSnd->play();
 		}
 		// Presionar M para misiles (cambiar)
-		else if (evento1.key.code == Keyboard::Key::M) {
+		else if (evento1.key.code == Keyboard::Key::LControl) {
 			jugador->lanzarMisiles();
 			misileSnd->play();
 		}
@@ -255,18 +277,18 @@ void Juego::procesar_eventos() {
 //actualizar todos los movimientos
 void Juego::actualizar() {
 	
-	//movimiento del fondo para que tenga una animación
+	//movimiento del fondo para que tenga una animaciÃ³n
 	fondo->move(-fondoSpeed * deltaTime, 0);
 
 	//generar un bucle para que parezca un fondo infinito
 	if (fondo->getPosition().x <= (-665.0f)) {
-	fondo->setPosition(0, 0); // Reinicia la posición del fondo
+	fondo->setPosition(0, 0); // Reinicia la posiciÃ³n del fondo
 	}
 
 	//actualizar movimiento del jugador
 	jugador->Actualizar(deltaTime);
 
-	//actualizar los movimientos de los enemigos sólo si están activos
+	//actualizar los movimientos de los enemigos sÃ³lo si estÃ¡n activos
 	for (int i = 0; i < 5; ++i) {
 		if (enemigos[i] && enemigos[i]->estaActivo()) {
 			enemigos[i]->Actualizar(deltaTime);
@@ -285,7 +307,7 @@ void Juego::actualizar() {
 	jugador->gestionarMisiles(deltaTime);
 
 	//DISPARO AUTOMATICO DEL BOSS
-	//iniciar el contador para del último disparo
+	//iniciar el contador para del Ãºltimo disparo
 	ultimoDisparo += deltaTime;
 	if (boss->estaActivo()) {
 		// cuando el contador supera el intervalo se activa
@@ -303,7 +325,7 @@ void Juego::actualizar() {
 	
 
 	//MISILES AUTOMATICOS DEL BOSS
-	//iniciar el contador para del último misil
+	//iniciar el contador para del Ãºltimo misil
 	ultimoMisil += deltaTime;
 	if (boss->estaActivo()) {
 		//cuando el contador supera el intervalo se activa
@@ -312,10 +334,7 @@ void Juego::actualizar() {
 			ultimoMisil = 0.0f;
 			boss->lanzarMisiles();
 			misileSnd->play();
-			std::cout << "deltaTime: " << deltaTime << std::endl;
-			std::cout << "ultimo Misil: " << ultimoMisil << std::endl;
-
-			
+		
 
 			// Reiniciar el contador de tiempo
 			
@@ -330,7 +349,7 @@ void Juego::actualizar() {
 	//detectar las colisiones	
 	detectar_colisiones();
 
-	//actualizar la animación de la explosion
+	//actualizar la animaciÃ³n de la explosion
 	explosionAnimada();
 
 
@@ -346,6 +365,14 @@ void Juego::actualizar() {
 		jugando = false;
 		
 	}
+
+	if (boss->obtenerVida() <= 0) {
+		ptos += 600;
+		puntajeText->setString("SCORE: " + to_string(ptos));
+		jugando = false;
+	}
+
+
 }
 
 //dibujar fondo, jugador
@@ -357,13 +384,13 @@ void Juego::dibujar() {
 	
 	jugador->Dibujar(ventana1);
 
-	// dibujar los enemigos si están activos
+	// dibujar los enemigos si estÃ¡n activos
 	for (int i = 0; i < 5; ++i) { 
 		if (enemigos[i] && enemigos[i]->estaActivo()) {
 			enemigos[i]->Dibujar(ventana1);
 		}
 	}
-	// dibjar al boss sólo si está activo
+	// dibjar al boss sÃ³lo si estÃ¡ activo
 	if (boss->estaActivo()) {
 		boss->Dibujar(ventana1);
 	}
@@ -394,7 +421,7 @@ void Juego::dibujar() {
 
 }
 
-//detección de colisiones
+//detecciÃ³n de colisiones
 void Juego::detectar_colisiones() {
 
 	colisiones_jugador_enemigos();
@@ -419,12 +446,12 @@ void Juego::colisiones_jugador_enemigos() {
 	if (spriteNave) {
 		FloatRect jugadorRect = spriteNave->getGlobalBounds();
 
-		//Comprobar con los enemigos que estén activos
+		//Comprobar con los enemigos que estÃ©n activos
 		for (int i = 0; i < 5; ++i) {
 			if (enemigos[i] && enemigos[i]->estaActivo()) {
 				// Obtener el sprite de cada enemigo
 				Sprite* spriteEnemigo = enemigos[i]->getSpriteNaveEnemiga();
-				// obtener el rectángulo de cada sprite
+				// obtener el rectÃ¡ngulo de cada sprite
 				FloatRect enemigoRect = spriteEnemigo->getGlobalBounds();
 
 				//detectar las colisiones entre jugadores y enemigos
@@ -435,11 +462,11 @@ void Juego::colisiones_jugador_enemigos() {
 					puntajeText->setString("SCORE: " + to_string(ptos));
 					vidasText->setString(to_string(vidas));
 
-					//ajustar la posición de la explosión a la posición del enemigo colisionado
+					//ajustar la posiciÃ³n de la explosiÃ³n a la posiciÃ³n del enemigo colisionado
 					posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
 					explosionAnimation.setPosition(posicionExplosion);
 
-					//activar la explosión
+					//activar la explosiÃ³n
 					explosionActiva = true;
 					//desactivar el enemigo
 					enemigos[i]->desactivar();
@@ -468,13 +495,13 @@ void Juego::colisiones_jugador_boss() {
 	if (spriteNave) {
 		FloatRect jugadorRect = spriteNave->getGlobalBounds();
 
-		//si el boss está activo, obtener el sprite y obtener el rectángulo
+		//si el boss estÃ¡ activo, obtener el sprite y obtener el rectÃ¡ngulo
 		if (boss->estaActivo()) {
 			Sprite* spriteBoss = boss->getSpriteBoss();
 			FloatRect bossRect = spriteBoss->getGlobalBounds();
-			//comprobar la colisión entre ambos rectángulos
+			//comprobar la colisiÃ³n entre ambos rectÃ¡ngulos
 			if (jugadorRect.intersects(bossRect)) {
-				//restar vida y generar explosión
+				//restar vida y generar explosiÃ³n
 				vidas -= 1;
 				vidasText->setString(to_string(vidas));
 				posicionExplosion = spriteNave->getPosition();
@@ -496,18 +523,18 @@ void Juego::colisiones_jugador_disparos() {
 		FloatRect jugadorRect = spriteNave->getGlobalBounds();
 		for (int i = 0; i < boss->getMaxDisparos(); ++i) {
 			if (boss->getDisparosPool()[i]->estaActivo()) {
-				// Obtener el rectángulo de cada disparo
+				// Obtener el rectÃ¡ngulo de cada disparo
 				FloatRect disparoRect = boss->getDisparosPool()[i]->bounds();
 				if (jugadorRect.intersects(disparoRect)) {
 					// Desactivar el disparo
 					boss->getDisparosPool()[i]->desactivar();
 					vidas -= 1;
 					vidasText->setString(to_string(vidas));
-					// Ajustar la posición de la explosión a la posición del enemigo colisionado
+					// Ajustar la posiciÃ³n de la explosiÃ³n a la posiciÃ³n del enemigo colisionado
 					posicionExplosion = spriteNave->getPosition();
 					explosionAnimation.setPosition(posicionExplosion);
 
-					// Activar la explosión
+					// Activar la explosiÃ³n
 					explosionActiva = true;
 
 
@@ -526,18 +553,18 @@ void Juego::colisiones_jugador_misiles() {
 		FloatRect jugadorRect = spriteNave->getGlobalBounds();
 		for (int i = 0; i < boss->getMaxMisiles(); ++i) {
 			if (boss->getMisilesPool()[i]->estaActivo()) {
-				// Obtener el rectángulo de cada misil
+				// Obtener el rectÃ¡ngulo de cada misil
 				FloatRect misilesRect = boss->getMisilesPool()[i]->bounds();
 				if (jugadorRect.intersects(misilesRect)) {
 					// Desactivar el misil
 					boss->getMisilesPool()[i]->desactivar();
 					vidas -= 3;
 					vidasText->setString(to_string(vidas));
-					// Ajustar la posición de la explosión a la posición del enemigo colisionado
+					// Ajustar la posiciÃ³n de la explosiÃ³n a la posiciÃ³n del enemigo colisionado
 					posicionExplosion = spriteNave->getPosition();
 					explosionAnimation.setPosition(posicionExplosion);
 
-					// Activar la explosión
+					// Activar la explosiÃ³n
 					explosionActiva = true;
 
 
@@ -553,17 +580,17 @@ void Juego::colisiones_jugador_misiles() {
 
 void Juego::colisiones_disparos_enemigos() {
 	
-	//Comprobar con los enemigos que estén activos
+	//Comprobar con los enemigos que estÃ©n activos
 	for (int i = 0; i < 5; ++i) {
 		if (enemigos[i] && enemigos[i]->estaActivo()) {
 			// Obtener el sprite de cada enemigo
 			Sprite* spriteEnemigo = enemigos[i]->getSpriteNaveEnemiga();
-			// obtener el rectángulo de cada sprite
+			// obtener el rectÃ¡ngulo de cada sprite
 			FloatRect enemigoRect = spriteEnemigo->getGlobalBounds();
 			//obtener los disparos activos
 			for (int j = 0; j < jugador->getMaxDisparos(); ++j) {
 				if (jugador->getDisparosPool()[j]->estaActivo()) {
-					// Obtener el rectángulo de cada disparo
+					// Obtener el rectÃ¡ngulo de cada disparo
 					FloatRect disparoRect = jugador->getDisparosPool()[j]->bounds();
 
 					// Detectar colisiones 
@@ -571,11 +598,11 @@ void Juego::colisiones_disparos_enemigos() {
 						// Desactivar el disparo
 						jugador->getDisparosPool()[j]->desactivar();
 
-						// Ajustar la posición de la explosión a la posición del enemigo colisionado
+						// Ajustar la posiciÃ³n de la explosiÃ³n a la posiciÃ³n del enemigo colisionado
 						posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
 						explosionAnimation.setPosition(posicionExplosion);
 
-						// Activar la explosión
+						// Activar la explosiÃ³n
 						explosionActiva = true;
 						// Desactivar el enemigo
 						enemigos[i]->desactivar();
@@ -589,7 +616,7 @@ void Juego::colisiones_disparos_enemigos() {
 
 
 						// Sumar puntaje por impacto de disparo
-						ptos += 10; // Puedes ajustar la puntuación según tu lógica
+						ptos += 10; // Puedes ajustar la puntuaciÃ³n segÃºn tu lÃ³gica
 						puntajeText->setString("SCORE: " + to_string(ptos));
 					}
 				}
@@ -598,17 +625,17 @@ void Juego::colisiones_disparos_enemigos() {
 	}
 }
 void Juego::colisiones_misiles_enemigos() {
-	//Comprobar con los enemigos que estén activos
+	//Comprobar con los enemigos que estÃ©n activos
 	for (int i = 0; i < 5; ++i) {
 		if (enemigos[i] && enemigos[i]->estaActivo()) {
 			// Obtener el sprite de cada enemigo
 			Sprite* spriteEnemigo = enemigos[i]->getSpriteNaveEnemiga();
-			// obtener el rectángulo de cada sprite
+			// obtener el rectÃ¡ngulo de cada sprite
 			FloatRect enemigoRect = spriteEnemigo->getGlobalBounds();
 			//comprobar las colisiones de los misiles con los enemigos
 			for (int j = 0; j < jugador->getMaxMisiles(); ++j) {
 				if (jugador->getMisilesPool()[j]->estaActivo()) {
-					// Obtener el rectángulo de cada misil
+					// Obtener el rectÃ¡ngulo de cada misil
 					FloatRect misilesRect = jugador->getMisilesPool()[j]->bounds();
 
 					// Detectar colisiones 
@@ -616,11 +643,11 @@ void Juego::colisiones_misiles_enemigos() {
 						// Desactivar el misil
 						jugador->getMisilesPool()[j]->desactivar();
 
-						// Ajustar la posición de la explosión a la posición del enemigo colisionado
+						// Ajustar la posiciÃ³n de la explosiÃ³n a la posiciÃ³n del enemigo colisionado
 						posicionExplosion = enemigos[i]->getSpriteNaveEnemiga()->getPosition();
 						explosionAnimation.setPosition(posicionExplosion);
 
-						// Activar la explosión
+						// Activar la explosiÃ³n
 						explosionActiva = true;
 						// Desactivar el enemigo
 						enemigos[i]->desactivar();
@@ -634,7 +661,7 @@ void Juego::colisiones_misiles_enemigos() {
 
 
 						// Sumar puntaje por impacto de misil
-						ptos += 10; // Puedes ajustar la puntuación según tu lógica
+						ptos += 10; // Puedes ajustar la puntuaciÃ³n segÃºn tu lÃ³gica
 						puntajeText->setString("SCORE: " + to_string(ptos));
 					}
 				}
@@ -647,7 +674,7 @@ void Juego::colisiones_disparos_boss() {
 			//comprobar las colisiones de los disparos con el boss
 			for (int i = 0; i < jugador->getMaxDisparos(); ++i) {
 				if (jugador->getDisparosPool()[i]->estaActivo()) {
-					// Obtener el rectángulo de cada disparo
+					// Obtener el rectÃ¡ngulo de cada disparo
 					FloatRect disparoRect = jugador->getDisparosPool()[i]->bounds();
 
 					// Detectar colisiones 
@@ -663,8 +690,7 @@ void Juego::colisiones_disparos_boss() {
 						int nuevaVida = boss->obtenerVida();
 						nuevaVida -= 1;
 						boss->modificarVida(nuevaVida);
-						//controlar por consola
-						std::cout << "Vida actual del Boss: " << boss->obtenerVida() << std::endl;
+						
 					}
 				}
 			}
@@ -676,7 +702,7 @@ void Juego::colisiones_misiles_boss() {
 	//comprobar las colisiones de los disparos con el boss
 	for (int i = 0; i < jugador->getMaxMisiles(); ++i) {
 		if (jugador->getMisilesPool()[i]->estaActivo()) {
-			// Obtener el rectángulo de cada disparo
+			// Obtener el rectÃ¡ngulo de cada disparo
 			FloatRect misilesRect = jugador->getMisilesPool()[i]->bounds();
 
 			// Detectar colisiones 
@@ -692,8 +718,7 @@ void Juego::colisiones_misiles_boss() {
 				int nuevaVida = boss->obtenerVida();
 				nuevaVida -= 10;
 				boss->modificarVida(nuevaVida);
-				//controlar por consola
-				std::cout << "Vida actual del Boss: " << boss->obtenerVida() << std::endl;
+				
 			}
 		}
 	}
@@ -755,8 +780,39 @@ void Juego::dificultad() {
 
 void Juego::reiniciar() {
 
-	cout << "Reiniciando el juego" << endl;
+	
+	
+	//Reiniciar posiciÃ³n del jugador
+	jugador->setPosition(Vector2f(100.0f, 300.0));
+	//Desactivar disparos de jugador
+	for (int i = 0; i < jugador->getMaxDisparos(); ++i) {
+		if (jugador->getDisparosPool()[i]->estaActivo()) {
+			jugador->getDisparosPool()[i]->desactivar();
+		}
+	}
+	//Desactivar misiles de jugador
+	for (int i = 0; i < jugador->getMaxMisiles(); ++i) {
+		if (jugador->getMisilesPool()[i]->estaActivo()) {
+			jugador->getMisilesPool()[i]->desactivar();
+		}
+	}
+	//Desactivar disparos Boss
+	for (int i = 0; i < boss->getMaxDisparos(); ++i) {
+		if (boss->getDisparosPool()[i]->estaActivo()) {
+			boss->getDisparosPool()[i]->desactivar();
+		}
+	}
+	//Desactivar misiles de boss
+	for (int i = 0; i < boss->getMaxMisiles(); ++i) {
+		if (boss->getMisilesPool()[i]->estaActivo()) {
+			boss->getMisilesPool()[i]->desactivar();
+		}
+	}
 
+	//Desactivar explosiones
+	explosionActiva = false;
+
+	//Reiniciar posiciones del pool de enemigos
 	for (int i = 0; i < 5; ++i) {
 		enemigos[i]->activar();
 	}
@@ -777,11 +833,17 @@ void Juego::reiniciar() {
 	ptos = 0;
 	puntajeText->setString("SCORE: " + to_string(ptos));
 	vidasText->setString(to_string(vidas));
+	//Reiniciar el fondo
 	fondo->setPosition(0, 0);
 
+	//desactivar boss si estÃ¡ activo
 	if (boss->estaActivo()) {
 		boss->desactivar();
 	}	
+	//reiniciar la vida del bos
+	int nuevaVida = boss->obtenerVida();
+	nuevaVida = 30;
+	boss->modificarVida(nuevaVida);
 
 	jugando = false;
 	start = false;
@@ -791,7 +853,7 @@ void Juego::reiniciar() {
 
 void Juego::gameOver() {
 	ventana1->draw(*fondoGameOver);
-	finDelJuego->setString("FINAL DEL JUEGO, TU PUNTUACIÓN ES:" + to_string(ptos));
+	finDelJuego->setString("FINAL DEL JUEGO, TU PUNTUACIÃ“N ES:" + to_string(ptos));
 	ventana1->draw(*finDelJuego);
 	ventana1->draw(*restart);
 	ventana1->display();  // Mostrar los elementos renderizados
@@ -820,16 +882,16 @@ void Juego::gameOver() {
 void Juego::explosionAnimada(){
 
 
-	//contador para la explosión
-
-//duracion del fram
 	
 
-	if (explosionActiva) { // Actualizar el tiempo de la explosión
+
+	
+
+	if (explosionActiva) { // Actualizar el tiempo de la explosiÃ³n
 		explosionTime += deltaTime;
 
-		// el frame actual es igual a la division entre el contador y la duración de los frames
-		//pasado a un número entero
+		// el frame actual es igual a la division entre el contador y la duraciÃ³n de los frames
+		//pasado a un nÃºmero entero
 		int currentFrame = static_cast<int>(explosionTime / explosionFrameDuration);
 		if (currentFrame < 3) {
 			explosionAnimation.setTexture(*explosionFrames[currentFrame]);

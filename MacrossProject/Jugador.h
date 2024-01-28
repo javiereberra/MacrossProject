@@ -79,4 +79,6 @@ public:
 		return maxMisiles;
 	}
 
+	void setPosition(Vector2f nuevaPosicion);
+
 };
