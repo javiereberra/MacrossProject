@@ -35,11 +35,6 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	vidasSprite->setScale(1.0f, 1.0f);
 	vidasSprite->setPosition(10, 10);
 
-	////Textura y Sprite de las explosiones
-	explText = new Texture;
-	explSprite = new Sprite;
-	explText->loadFromFile("assets/exp2tr.png");
-	explSprite->setTexture(*explText);
 	
 	//fuente
 	fuente = new Font;
@@ -244,6 +239,7 @@ void Juego::procesar_eventos() {
 			jugador->disparar();	
 			disparoSnd->play();
 		}
+		// Presionar M para misiles (cambiar)
 		else if (evento1.key.code == Keyboard::Key::M) {
 			jugador->lanzarMisiles();
 			misileSnd->play();
@@ -295,10 +291,11 @@ void Juego::actualizar() {
 		// cuando el contador supera el intervalo se activa
 		if (ultimoDisparo >= intervaloDisparo) {
 			// Dispara
-			boss->disparar();
-			disparoSnd->play();
-			// Reiniciar el contador
 			ultimoDisparo = 0.0f;
+			boss->disparar();
+			
+			// Reiniciar el contador
+			
 		}
 	}
 	// actualizar los disparos
@@ -312,14 +309,16 @@ void Juego::actualizar() {
 		//cuando el contador supera el intervalo se activa
 		if (ultimoMisil >= intervaloMisiles) {
 			// Dispara
+			ultimoMisil = 0.0f;
 			boss->lanzarMisiles();
-			
 			misileSnd->play();
+			std::cout << "deltaTime: " << deltaTime << std::endl;
+			std::cout << "ultimo Misil: " << ultimoMisil << std::endl;
 
 			
 
 			// Reiniciar el contador de tiempo
-			ultimoMisil = 0.0f;
+			
 			
 		}
 		
@@ -378,6 +377,7 @@ void Juego::dibujar() {
 	boss->dibujarDisparos(ventana1);
 	//dibujar misiles de boss
 	boss->dibujarMisiles(ventana1);
+	
 	
 	//dibujar los puntaje y las vidas
 	ventana1->draw(*puntajeText);

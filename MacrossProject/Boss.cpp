@@ -108,7 +108,7 @@ void Boss::lanzarMisiles() {
 	//obtener la posición del brazo lanzamisiles del boss
 	Vector2f bossOrigen = bossSprite->getPosition();
 	Vector2f posicionBrazo = Vector2f(bossOrigen.x - 45, bossOrigen.y + 7);
-
+	misilDibujado = false;
 	for (int i = 0; i < maxMisiles; ++i) {
 		//si el disparo no está activo, se desactiva y se elimina para liberar memoria
 		if (!misilesPool[i]->estaActivo()) {
@@ -117,6 +117,7 @@ void Boss::lanzarMisiles() {
 			//se crea un nuevo disparo y se activa en la posicion del brazo
 			misilesPool[i] = new Misiles(posicionBrazo);
 			misilesPool[i]->activar();
+			misilDibujado = true;
 			//aquí se voltea el sprite para que el misil vaya en otra direccion
 			misilesPool[i]->voltear();
 			break;
@@ -153,9 +154,12 @@ void Boss::dibujarDisparos(RenderWindow* ventana1) {
 
 void Boss::dibujarMisiles(RenderWindow* ventana1) {
 
+	
+
 	for (int i = 0; i < maxMisiles; ++i) {
 		if (misilesPool[i]->estaActivo()) {
 			misilesPool[i]->Dibujar(ventana1); misilesPool;
+			
 		}
 	}
 }

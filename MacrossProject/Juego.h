@@ -32,10 +32,6 @@ private:
 	Texture* textura3;
 	Sprite* vidasSprite;
 
-	//Textura y sprite para una explosión cuando naves son eliminadas
-	Texture* explText;
-	Sprite* explSprite;
-
 	//fuente para todos los textos del juego
 	Font* fuente;
 	//texto para el menu de inicio
@@ -93,7 +89,7 @@ private:
 	const float intervaloDisparo = 60.0f;
 
 	float ultimoMisil;
-	const float intervaloMisiles = 80.0f;
+	const float intervaloMisiles = 120.0f;
 
 	float explosionTime;
 	float explosionFrameDuration;

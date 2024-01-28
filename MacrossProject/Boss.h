@@ -27,8 +27,10 @@ private:
 	Disparo* disparosPool[maxDisparos];
 
 	//generar un pool de misiles
-	static const int maxMisiles = 1;
+	static const int maxMisiles = 3;
 	Misiles* misilesPool[maxMisiles];
+
+	bool misilDibujado = false;
 
 public:
 	//constructor
@@ -101,5 +103,9 @@ public:
 	//metodo para obtener el max de disparos en Juego
 	int getMaxMisiles() const {
 		return maxMisiles;
+	}
+
+	bool seDibujoMisil() const  {
+		return misilDibujado;
 	}
 }; 
