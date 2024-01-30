@@ -32,6 +32,8 @@ private:
 public:
 	//constructor
 	Jugador();
+	//destructor de jugador
+	~Jugador();
 	//para dibujar en clase Juego
 	void Dibujar(RenderWindow* ventana1);
 

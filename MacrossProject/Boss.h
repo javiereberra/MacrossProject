@@ -35,6 +35,8 @@ private:
 public:
 	//constructor
 	Boss();
+	//destructor de boss
+	~Boss();
 
 	//vector para la posición en x e y
 	Vector2f position;
@@ -108,4 +110,7 @@ public:
 	bool seDibujoMisil() const  {
 		return misilDibujado;
 	}
+
+	void setPosition(Vector2f nuevaPosicion);
+
 }; 

@@ -110,7 +110,12 @@ private:
 	SoundBuffer* explosionBff;
 	Sound* explosionSnd;
 	
+	//Musica
+	Music intro;
+	Music game;
+	Music end;
 	
+	Clock clock;
 
 public:
 	//constructor de juego

@@ -23,7 +23,7 @@ Boss::Boss()
 	velocidadY = 0.8f;
 
 	activo = false;
-	vida = 30;
+	vida = 100;
 
 	//inicializar el pool de disparos
 	for (int i = 0; i < maxDisparos; ++i) {
@@ -173,4 +173,22 @@ void Boss::desactivar() {
 void Boss::activar() {
 
 	activo = true;
+}
+
+void Boss::setPosition(Vector2f nuevaPosicion) {
+
+	position = nuevaPosicion;
+	bossSprite->setPosition(position);
+}
+
+//liberar memoria de los pools
+Boss::~Boss() {
+
+	for (int i = 0; i < maxDisparos; ++i) {
+		delete disparosPool[i];
+	}
+
+	for (int i = 0; i < maxMisiles; ++i) {
+		delete misilesPool[i];
+	}
 }

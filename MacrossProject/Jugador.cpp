@@ -152,3 +152,15 @@ void Jugador::setPosition(Vector2f nuevaPosicion) {
 	position = nuevaPosicion;
 	nave->setPosition(position);
 }
+
+//liberar memoria de los pools
+Jugador::~Jugador() {
+
+	for (int i = 0; i < maxDisparos; ++i) {
+		delete disparosPool[i];
+	}
+
+	for (int i = 0; i < maxMisiles; ++i) {
+		delete misilesPool[i];
+	}
+}

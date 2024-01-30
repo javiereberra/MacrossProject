@@ -12,15 +12,16 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 
 	//Ventana
 	ventana1 = new RenderWindow(VideoMode(ancho, alto), titulo);
+	
 
 	//Textura y Sprite del fondo del nivel
 	textura1 = new Texture;
 	fondo = new Sprite;
 	textura1->loadFromFile("assets/fondo1.jpg");
 	fondo->setTexture(*textura1);
-	fondo->setScale(2.0f,2.0f);
-	
-	
+	fondo->setScale(2.0f, 2.0f);
+
+
 	//Textura y Sprite del fondo de inicio
 	textura2 = new Texture;
 	fondoMenu = new Sprite;
@@ -35,7 +36,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	vidasSprite->setScale(1.0f, 1.0f);
 	vidasSprite->setPosition(10, 10);
 
-	
+
 	//fuente
 	fuente = new Font;
 
@@ -49,13 +50,13 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 
 	instrucc = new Text;
 	instrucc->setFont(*fuente);
-	instrucc->setString("PRESIONA ARRIBA ABAJO IZQUIERDA DERECHA PARA MOVERTE");
+	instrucc->setString("PRESIONA 'ARRIBA, ABAJO, IZQUIERDA, DERECHA' PARA MOVERTE");
 	instrucc->setCharacterSize(15);
 	instrucc->setPosition(180, 430);
 
 	instrucc2 = new Text;
 	instrucc2->setFont(*fuente);
-	instrucc2->setString("PRESIONA SPACE PARA DISPARA Y CONTROL PARA MISIL");
+	instrucc2->setString("PRESIONA 'SPACE' PARA DISPARAR Y 'CONTROL' PARA MISIL");
 	instrucc2->setCharacterSize(15);
 	instrucc2->setPosition(200, 460);
 
@@ -71,7 +72,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	fondoGameOver = new Sprite;
 	textura4->loadFromFile("assets/gameover.jpg");
 	fondoGameOver->setTexture(*textura4);
-	
+
 	//cargar texturas de explosion
 	for (int i = 0; i < 3; ++i) {
 		explosionFrames[i] = new Texture;
@@ -101,20 +102,30 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	disparoSnd = new Sound;
 	disparoSnd->setBuffer(*disparoBff);
 	disparoSnd->setVolume(25.0f);
-	
+
 	misileBff = new SoundBuffer;
 	misileBff->loadFromFile("assets/misile.wav");
 	misileSnd = new Sound;
 	misileSnd->setBuffer(*misileBff);
 	misileSnd->setVolume(25.0f);
 
-	
+
 	explosionBff = new SoundBuffer;
 	explosionBff->loadFromFile("assets/explosion.wav");
 	explosionSnd = new Sound;
 	explosionSnd->setBuffer(*explosionBff);
 	explosionSnd->setVolume(15.0f);
 
+	//musica
+	intro.openFromFile("assets/intro.ogg");
+	intro.setVolume(20);
+	intro.setLoop(true);
+	game.openFromFile("assets/game.ogg");
+	game.setVolume(20);
+	game.setLoop(true);
+	end.openFromFile("assets/end.ogg");
+	end.setVolume(20);
+	
 	
 
 	//jugador
@@ -154,7 +165,10 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	start = false;
 
 	//establecer los 60fps por segundo
+	 
 	deltaTime = 1.0f / 60.0f;
+
+	
 
 	//establecer vidas y puntaje inicial
 	vidas = 3;
@@ -193,33 +207,43 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 //metodo para iniciar un menu simple antes de iniciar el juego
 void Juego::ejecutar() {
 
+	intro.play();
+	
 	while (ventana1->isOpen()) {
 		Event evento;
 		while (ventana1->pollEvent(evento)) {
 			if (evento.type == Event::Closed)
 				ventana1->close();
+			
 			//Presionar "s" para iniciar el gameloop
 			else if (evento.type == Event::KeyPressed) {
 				if (evento.key.code == Keyboard::Key::S && !start) {
 
 					start = true;
 					jugando = true;
+					
+					intro.stop();
+					
 				}
 				
 				
 			}
 		}
+		
+	
 
 		ventana1->clear(Color::Black);
 
 		if (jugando) {
 			//iniciar el loop si start es true
 			gameLoop();
-
+			intro.play();
 		}
 		else {
 			if (start){
 				gameOver();
+				
+				
 		}
 			else {
 				//Menu de fondo si start es false
@@ -233,14 +257,15 @@ void Juego::ejecutar() {
 		}
 
 		ventana1->display();
+		
 	}
 }
 
 //el loop del juego iniciado, procesando eventos, actualizando moviemientos y dibujando todo
 void Juego::gameLoop() {
-	
+	game.play();
 	while (ventana1->isOpen() && jugando) {
-
+		
 		procesar_eventos();
 		actualizar();
 		dibujar();
@@ -260,6 +285,8 @@ void Juego::procesar_eventos() {
 		if (evento1.key.code == Keyboard::Key::Space) {
 			jugador->disparar();	
 			disparoSnd->play();
+			
+
 		}
 		// Presionar M para misiles (cambiar)
 		else if (evento1.key.code == Keyboard::Key::LControl) {
@@ -364,12 +391,16 @@ void Juego::actualizar() {
 	if (vidas <= 0) {
 		jugando = false;
 		
+		
+		
 	}
 
 	if (boss->obtenerVida() <= 0) {
 		ptos += 600;
 		puntajeText->setString("SCORE: " + to_string(ptos));
 		jugando = false;
+		
+		
 	}
 
 
@@ -796,6 +827,8 @@ void Juego::reiniciar() {
 			jugador->getMisilesPool()[i]->desactivar();
 		}
 	}
+	//Reiniciar posición del boss
+	boss->setPosition(Vector2f(850.0f, 300.0f));
 	//Desactivar disparos Boss
 	for (int i = 0; i < boss->getMaxDisparos(); ++i) {
 		if (boss->getDisparosPool()[i]->estaActivo()) {
@@ -847,11 +880,19 @@ void Juego::reiniciar() {
 
 	jugando = false;
 	start = false;
-
+	
 
 }
 
 void Juego::gameOver() {
+	
+	
+	
+	end.play();		
+	intro.stop();
+	game.stop();
+
+	
 	ventana1->draw(*fondoGameOver);
 	finDelJuego->setString("FINAL DEL JUEGO, TU PUNTUACIÓN ES:" + to_string(ptos));
 	ventana1->draw(*finDelJuego);
@@ -876,6 +917,8 @@ void Juego::gameOver() {
 
 	if (reiniciarPresionado) {
 		reiniciar();
+		end.stop();
+		intro.play();
 	}
 }
 
@@ -901,4 +944,13 @@ void Juego::explosionAnimada(){
 			explosionTime = 0.0f;
 		}
 	}
+}
+
+//liberar memoria de las instancias
+Juego::~Juego() {
+
+	delete boss;
+	delete enemigos;
+	delete jugador;
+
 }
