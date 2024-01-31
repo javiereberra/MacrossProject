@@ -115,7 +115,7 @@ private:
 	Music game;
 	Music end;
 	
-	Clock clock;
+	
 
 public:
 	//constructor de juego

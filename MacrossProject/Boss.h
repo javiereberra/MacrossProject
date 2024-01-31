@@ -30,7 +30,7 @@ private:
 	static const int maxMisiles = 3;
 	Misiles* misilesPool[maxMisiles];
 
-	bool misilDibujado = false;
+	
 
 public:
 	//constructor
@@ -106,10 +106,8 @@ public:
 	int getMaxMisiles() const {
 		return maxMisiles;
 	}
-
-	bool seDibujoMisil() const  {
-		return misilDibujado;
-	}
+	
+	//método para reiniciar la posición del boss en Juego
 
 	void setPosition(Vector2f nuevaPosicion);
 

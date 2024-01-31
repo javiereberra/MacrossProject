@@ -40,7 +40,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	//fuente
 	fuente = new Font;
 
-	//texto para el menú de inicio
+	//textos para el menú de inicio
 	menu = new Text;
 	fuente->loadFromFile("assets/arial.ttf");
 	menu->setFont(*fuente);
@@ -81,14 +81,14 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	//cargar la textura inicial del sprite
 	explosionAnimation.setTexture(*explosionFrames[0]);
 
-	//texto para gameover
+	//textos para gameover (puntuación y reiniciar el juego)
 	finDelJuego = new Text;
 	finDelJuego->setFont(*fuente);
 	finDelJuego->setString("FINAL DEL JUEGO, TU PUNTUACIÓN ES:" + to_string(ptos));
 	finDelJuego->setCharacterSize(15);
 	finDelJuego->setPosition(260, 400);
 
-	//texto para gameover
+	
 	restart = new Text;
 	restart->setFont(*fuente);
 	restart->setString("PRESIONA 'R' PARA EL MENU INICIAL");
@@ -96,7 +96,7 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	restart->setPosition(270, 450);
 
 
-	//sonidos fx
+	//sonidos fx de disparos, misiles y explosiones
 	disparoBff = new SoundBuffer;
 	disparoBff->loadFromFile("assets/shoot.wav");
 	disparoSnd = new Sound;
@@ -109,14 +109,13 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	misileSnd->setBuffer(*misileBff);
 	misileSnd->setVolume(25.0f);
 
-
 	explosionBff = new SoundBuffer;
 	explosionBff->loadFromFile("assets/explosion.wav");
 	explosionSnd = new Sound;
 	explosionSnd->setBuffer(*explosionBff);
 	explosionSnd->setVolume(15.0f);
 
-	//musica
+	//musicas de menu inicio, gameloop y gameover
 	intro.openFromFile("assets/intro.ogg");
 	intro.setVolume(20);
 	intro.setLoop(true);
@@ -161,8 +160,9 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	//velocidad para la animación del fondo
 	fondoSpeed = 2.0f;
 
-	//para que siempre inicie el menú
+	//booleandos para gestionar transciciones entre el menú, el juego y el gameover
 	start = false;
+	jugando = false;
 
 	//establecer los 60fps por segundo
 	 
@@ -193,15 +193,15 @@ Juego::Juego(int ancho, int alto, std::string titulo) {
 	
 	posAleatoria = 0;
 
-
 	//setear el contador del último disparo en 0
 	ultimoDisparo = 0.0f;
 	ultimoMisil = 0.0f;
 
+	//contador para la explosion y duración de cada frame de la animación
 	explosionTime = 0.0f;
 	explosionFrameDuration = 2.5f;
 
-	jugando = false;
+	
 }
 
 //metodo para iniciar un menu simple antes de iniciar el juego
@@ -281,14 +281,14 @@ void Juego::procesar_eventos() {
 			ventana1->close();
 			break;
 		case Event::KeyPressed:
-		// Presionar SPACE para disparar
+		// Presionar SPACE para disparar y reproducir el sonido
 		if (evento1.key.code == Keyboard::Key::Space) {
 			jugador->disparar();	
 			disparoSnd->play();
 			
 
 		}
-		// Presionar M para misiles (cambiar)
+		// Presionar CONTROL IZQ para misiles y reproducir el sonido
 		else if (evento1.key.code == Keyboard::Key::LControl) {
 			jugador->lanzarMisiles();
 			misileSnd->play();
@@ -321,11 +321,10 @@ void Juego::actualizar() {
 			enemigos[i]->Actualizar(deltaTime);
 		}
 	}
-	//actualizar el comportamiento del boss
+	//actualizar el comportamiento del boss si está activo
 	if (boss->estaActivo()) {
 		boss->Actualizar(deltaTime);
 	}
-
 
 	// actualizar los disparos del jugador
 	jugador->gestionarDisparos(deltaTime);
@@ -334,16 +333,16 @@ void Juego::actualizar() {
 	jugador->gestionarMisiles(deltaTime);
 
 	//DISPARO AUTOMATICO DEL BOSS
-	//iniciar el contador para del último disparo
+	//iniciar el contador del último disparo
 	ultimoDisparo += deltaTime;
 	if (boss->estaActivo()) {
 		// cuando el contador supera el intervalo se activa
 		if (ultimoDisparo >= intervaloDisparo) {
-			// Dispara
+			// Dispara, se reinicia el contador y reproduce el sonido
 			ultimoDisparo = 0.0f;
 			boss->disparar();
+			disparoSnd->play();
 			
-			// Reiniciar el contador
 			
 		}
 	}
@@ -352,18 +351,18 @@ void Juego::actualizar() {
 	
 
 	//MISILES AUTOMATICOS DEL BOSS
-	//iniciar el contador para del último misil
+	//iniciar el contador del último misil
 	ultimoMisil += deltaTime;
 	if (boss->estaActivo()) {
 		//cuando el contador supera el intervalo se activa
 		if (ultimoMisil >= intervaloMisiles) {
-			// Dispara
+			// Dispara, se reinicia el contador y reproduce el sonido
 			ultimoMisil = 0.0f;
 			boss->lanzarMisiles();
 			misileSnd->play();
 		
 
-			// Reiniciar el contador de tiempo
+			
 			
 			
 		}
@@ -372,37 +371,29 @@ void Juego::actualizar() {
 	//alctualizar el movimiento
 	boss->gestionarMisiles(deltaTime);
 
-
 	//detectar las colisiones	
 	detectar_colisiones();
 
 	//actualizar la animación de la explosion
 	explosionAnimada();
 
-
-	
-
-
-
-
-	//metodo para dificultad
+	//actualizar la dificultad
 	dificultad();
 
+
+	//Si las vidas del jugador llegan a 0, jugando false y se activa el gameover
 	if (vidas <= 0) {
 		jugando = false;
 		
 		
-		
 	}
-
+	//Si las vidas del boss llegan a 0, jugando false y se activa el gameover
 	if (boss->obtenerVida() <= 0) {
 		ptos += 600;
 		puntajeText->setString("SCORE: " + to_string(ptos));
 		jugando = false;
-		
-		
+				
 	}
-
 
 }
 
@@ -472,7 +463,6 @@ void Juego::colisiones_jugador_enemigos() {
 	Sprite* spriteNave = jugador->getSpriteNaveJugador();
 
 
-
 	//obtener el rectangulo del sprite de jugador
 	if (spriteNave) {
 		FloatRect jugadorRect = spriteNave->getGlobalBounds();
@@ -521,7 +511,6 @@ void Juego::colisiones_jugador_boss() {
 	Sprite* spriteNave = jugador->getSpriteNaveJugador();
 
 
-
 	//obtener el rectangulo del sprite de jugador
 	if (spriteNave) {
 		FloatRect jugadorRect = spriteNave->getGlobalBounds();
@@ -568,8 +557,6 @@ void Juego::colisiones_jugador_disparos() {
 					// Activar la explosión
 					explosionActiva = true;
 
-
-
 				}
 			}
 		}
@@ -605,8 +592,6 @@ void Juego::colisiones_jugador_misiles() {
 		}
 	}
 }
-
-
 
 
 void Juego::colisiones_disparos_enemigos() {
@@ -725,27 +710,27 @@ void Juego::colisiones_disparos_boss() {
 					}
 				}
 			}
-		
+	
 
 }
 
 void Juego::colisiones_misiles_boss() {
-	//comprobar las colisiones de los disparos con el boss
+	//comprobar las colisiones de los misiles con el boss
 	for (int i = 0; i < jugador->getMaxMisiles(); ++i) {
 		if (jugador->getMisilesPool()[i]->estaActivo()) {
-			// Obtener el rectángulo de cada disparo
+			// Obtener el rectángulo de cada misil
 			FloatRect misilesRect = jugador->getMisilesPool()[i]->bounds();
 
 			// Detectar colisiones 
 			if ((boss->estaActivo()) && (boss->Colision(misilesRect))) {
-				// Desactivar el disparo
+				// Desactivar el misil
 				jugador->getMisilesPool()[i]->desactivar();
 
 				//posicion del impacto
 				posicionExplosion = boss->getSpriteBoss()->getPosition();
 				explosionAnimation.setPosition(posicionExplosion);
 				explosionActiva = true;
-				//restar una vida a boss
+				//restar diez vidas al boss
 				int nuevaVida = boss->obtenerVida();
 				nuevaVida -= 10;
 				boss->modificarVida(nuevaVida);
@@ -808,7 +793,8 @@ void Juego::dificultad() {
 
 
 }
-
+//metodo para reiniciar las posiciones del jugador, enemigos y boss
+//desactivar disparos y misiles, reiniciar vidas y puntajes
 void Juego::reiniciar() {
 
 	
@@ -873,9 +859,9 @@ void Juego::reiniciar() {
 	if (boss->estaActivo()) {
 		boss->desactivar();
 	}	
-	//reiniciar la vida del bos
+	//reiniciar la vida del boss
 	int nuevaVida = boss->obtenerVida();
-	nuevaVida = 30;
+	nuevaVida = 100;
 	boss->modificarVida(nuevaVida);
 
 	jugando = false;
@@ -883,24 +869,26 @@ void Juego::reiniciar() {
 	
 
 }
-
+//método para la pantalla gameOver tanto cuando pierda
+//como cuando derrote al boss
 void Juego::gameOver() {
-	
-	
-	
+		
+	//detener canciones y reproducir musica de fin de juego
 	end.play();		
 	intro.stop();
 	game.stop();
-
-	
+		
+	//dibujar fondo y texto de gameover
 	ventana1->draw(*fondoGameOver);
 	finDelJuego->setString("FINAL DEL JUEGO, TU PUNTUACIÓN ES:" + to_string(ptos));
 	ventana1->draw(*finDelJuego);
 	ventana1->draw(*restart);
 	ventana1->display();  // Mostrar los elementos renderizados
-
+	
+	//booleano para detectar si se presionó REINICIAR
 	bool reiniciarPresionado = false;
 
+	//detectar eventos para reiniciar
 	while (ventana1->isOpen() && !reiniciarPresionado) {
 		Event evento;
 		if (ventana1->pollEvent(evento)) {
@@ -914,21 +902,16 @@ void Juego::gameOver() {
 			}
 		}
 	}
-
+	//si reiniciar es presionado, se activa el metodo reiniciar, detiene musica e inicia musica de inicio
 	if (reiniciarPresionado) {
 		reiniciar();
 		end.stop();
 		intro.play();
 	}
 }
-
+//metodo para la animación de la explosión
 void Juego::explosionAnimada(){
-
-
-	
-
-
-	
+		
 
 	if (explosionActiva) { // Actualizar el tiempo de la explosión
 		explosionTime += deltaTime;

@@ -120,7 +120,7 @@ void Jugador::gestionarDisparos(float deltaTime) {
 		}
 	}
 }
-
+//lo mismo con los misiles
 void Jugador::gestionarMisiles(float deltaTime) {
 	for (int i = 0; i < maxMisiles; ++i) {
 		if (misilesPool[i]->estaActivo()) {
@@ -128,7 +128,7 @@ void Jugador::gestionarMisiles(float deltaTime) {
 		}
 	}
 }
-
+//métodos para dibujar disparos y misiles
 void Jugador::dibujarDisparos(RenderWindow* ventana1) {
 
 	for (int i = 0; i < maxDisparos; ++i) {
@@ -146,7 +146,7 @@ void Jugador::dibujarMisiles(RenderWindow* ventana1) {
 		}
 	}
 }
-
+//método para reiniciar posicion de Jugador
 void Jugador::setPosition(Vector2f nuevaPosicion) {
 
 	position = nuevaPosicion;

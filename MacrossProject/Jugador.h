@@ -80,7 +80,7 @@ public:
 	int getMaxMisiles() const {
 		return maxMisiles;
 	}
-
+	//método para reiniciar la posición del Jugador desde Juego
 	void setPosition(Vector2f nuevaPosicion);
 
 };

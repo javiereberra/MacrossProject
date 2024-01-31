@@ -5,6 +5,7 @@
 
 using namespace sf;
 
+//constructor
 Boss::Boss()
 {
 	//definir textura, tamaño, origen y velocidades del sprite
@@ -108,7 +109,7 @@ void Boss::lanzarMisiles() {
 	//obtener la posición del brazo lanzamisiles del boss
 	Vector2f bossOrigen = bossSprite->getPosition();
 	Vector2f posicionBrazo = Vector2f(bossOrigen.x - 45, bossOrigen.y + 7);
-	misilDibujado = false;
+	
 	for (int i = 0; i < maxMisiles; ++i) {
 		//si el disparo no está activo, se desactiva y se elimina para liberar memoria
 		if (!misilesPool[i]->estaActivo()) {
@@ -117,7 +118,7 @@ void Boss::lanzarMisiles() {
 			//se crea un nuevo disparo y se activa en la posicion del brazo
 			misilesPool[i] = new Misiles(posicionBrazo);
 			misilesPool[i]->activar();
-			misilDibujado = true;
+			
 			//aquí se voltea el sprite para que el misil vaya en otra direccion
 			misilesPool[i]->voltear();
 			break;
@@ -164,7 +165,7 @@ void Boss::dibujarMisiles(RenderWindow* ventana1) {
 	}
 }
 
-//método para eliminar los enemigos en pantalla y dejen de ser dibujados
+//métodos para activar y desactivar el boss
 void Boss::desactivar() {
 
 	activo = false;
@@ -174,7 +175,7 @@ void Boss::activar() {
 
 	activo = true;
 }
-
+//método para poder reiniciar la posicion de boss
 void Boss::setPosition(Vector2f nuevaPosicion) {
 
 	position = nuevaPosicion;
